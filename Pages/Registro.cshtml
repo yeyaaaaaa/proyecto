@@ -1,0 +1,73 @@
+﻿@page
+@model MyApp.Namespace.RegistroModel
+@{
+}
+<style>
+    body {
+        background: url(/img/Fondos.jpg);
+        overflow-x: hidden;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        height: 100vh;
+    }
+    .fondo-transparente{
+        background-color: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(10px);
+    }
+</style>
+
+<div class="mb-3">
+    <h1 class="display-2 fw-normal text-center">Registrarse</h1>
+</div>
+<form action="" class="fondo-transparente p-3 text-primary-emphasis border border-primary-subtle rounded-3 col-8 mx-auto" method="post">
+    <div class="mb-3">
+        <label for="tipodoc" class="form-label">Tipo de documento de identidad</label>
+        <select class="form-select" id="tipodoc" @*asp-for="TipoDocumento"*@ required>
+            <option selected disabled value="">Selecciona uno</option>
+            <option value="1">Cedula de ciudadania</option>
+            <option value="2">Tarjeta de identidad</option>
+        </select>
+        <span @*asp-validation-for="TipoDocumento"*@ class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="doc" class="form-label">Numero de documento</label>
+        <input type="number" class="form-control" id="doc" @*asp-for="NumeroDocumento"*@ placeholder="Ingrese el numero de documento" required>
+        <span @*asp-validation-for="NumeroDocumento"*@ class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input type="password" class="form-control" id="password" @*asp-for="Contraseña"*@ placeholder="Ingrese su contraseña" required>
+        <span @*asp-validation-for="Contraseña"*@ class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary d-grid col-4 mx-auto mb-3">Entrar</button>
+    <div class="text-center">
+    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover " asp-page="/Login" role="button">Iniciar sesion</a>
+    </div>
+    </form>
+<div class="mb-3">
+    <h1 class="display-2 fw-normal text-center">Registrarse</h1>
+</div>
+<form action="" class="fondo-transparente p-3 text-primary-emphasis border border-primary-subtle rounded-3 col-8 mx-auto">
+    <div class="mb-3">
+        <label for="tipodoc" class="form-label">Tipo de documento de identidad</label>
+        <select class="form-select" id="tipodoc" required>
+            <option selected disabled value="">Selecciona uno</option>
+            <option value="1">Cedula de ciudadania</option>
+            <option value="2">Tarjeta de identidad</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="doc" class="form-label">Numero de documento</label>
+        <input type="number" class="form-control" id="doc" placeholder="Ingrese el numero de documento" required>
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required>
+    </div>
+    <button type="submit" class="btn btn-primary d-grid col-4 mx-auto mb-3">Entrar</button>
+    <div class="text-center">
+    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover " asp-page="/Login" role="button">Iniciar sesion</a>
+    </div>
+    </form>

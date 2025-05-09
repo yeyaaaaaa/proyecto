@@ -1,0 +1,31 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Check Lab";
+}
+<style>
+    body {
+        background: url(/img/laboratorio-clinico.jpg);
+        overflow-x: hidden;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        height: 100vh;
+    }
+    .fondo-transparente{
+        background-color: rgba(255, 255, 255, 0.6);
+        border-radius: 1rem;
+        padding: 1rem;
+    }
+</style>
+<div class="text-center">
+    <div class=" texto p-5">
+        <h1 class="display-2 fw-bold">Tu salud</h1>
+        <h3 class="display-4 fw-bolder">Nuestra prioridad</h3>
+    </div>
+    <div class="fondo-transparente">
+        <h5 class="fw-normal lh-lg">En ChekLab, simplificamos tu agendamiendo para que recibas atencion medica confiable sin complicaciones.</h5>
+        <a class="btn btn-primary d-grid col-6 mx-auto"  asp-page="/Login" role="button">Ingresa a tu cuenta</a>
+    </div>
+</div>

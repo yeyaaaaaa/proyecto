@@ -2,7 +2,7 @@
   "Files": [
     {
       "Id": "C:\\Users\\User\\Desktop\\Programacion3\\proyecto\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\proyecto.bundle.scp.css",
-      "PackagePath": "staticwebassets\\proyecto.ti4dpd14t4.bundle.scp.css"
+      "PackagePath": "staticwebassets\\proyecto.kb63nl5iea.bundle.scp.css"
     },
     {
       "Id": "C:\\Users\\User\\Desktop\\Programacion3\\proyecto\\wwwroot\\css\\site.css",
@@ -15,6 +15,10 @@
     {
       "Id": "C:\\Users\\User\\Desktop\\Programacion3\\proyecto\\wwwroot\\img\\CheckLab.png",
       "PackagePath": "staticwebassets\\img\\CheckLab.png"
+    },
+    {
+      "Id": "C:\\Users\\User\\Desktop\\Programacion3\\proyecto\\wwwroot\\img\\Fondos.jpg",
+      "PackagePath": "staticwebassets\\img\\Fondos.jpg"
     },
     {
       "Id": "C:\\Users\\User\\Desktop\\Programacion3\\proyecto\\wwwroot\\img\\LogoPrueba.avif",

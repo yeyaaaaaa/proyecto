@@ -2,15 +2,17 @@ namespace proyecto.Models;
 
 public class Usuario
 {
-    public int UsuarioID { get; set; }
-    public string Nombre { get; set; } = string.Empty;
-    public string Apellido { get; set; } = string.Empty;
-    public string Correo { get; set; } = string.Empty;
-    public string Contraseña { get; set; } = string.Empty;
-    public int Documento { get; set; }
+
+    public required int UsuarioID { get; set; }
+    public required string Nombre { get; set; }
+    public required string Apellido { get; set; }
+    public required string Correo { get; set; }
+    public required string Contraseña { get; set; }
+    public required string TipoIdentificacion { get; set; } = string.Empty;
+    public required int Documento { get; set; }
     public bool Estado { get; set; } = true;
 
-    public int RolFK { get; set; }
+    public required int RolFK { get; set; }
     public Rol? Rol { get; set; }
 
     public Paciente? Paciente { get; set; }
@@ -22,5 +24,21 @@ public class Usuario
     public ICollection<Notificacion>? Notificaciones { get; set; }
     public ICollection<HistorialCita>? HistorialCitas { get; set; }
     public ICollection<LogSistema>? Logs { get; set; }
-    
+
+    public void SetContraseña(string contraseña)
+    {
+        if (string.IsNullOrWhiteSpace(contraseña))
+            throw new ArgumentException("La contraseña no puede estar vacía.");
+
+        if (contraseña.Length < 8)
+            throw new ArgumentException("La contraseña debe tener al menos 8 caracteres.");
+
+        if (!contraseña.Any(char.IsDigit))
+            throw new ArgumentException("La contraseña debe contener al menos un número.");
+
+        if (!contraseña.Any(char.IsLetter))
+            throw new ArgumentException("La contraseña debe contener al menos una letra.");
+
+        Contraseña = contraseña;
+    }
 }

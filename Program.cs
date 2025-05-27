@@ -22,6 +22,16 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+//modificacion hecha por harold
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    Seed.InsertarDatosIniciales(context);
+}
+//---------------------------
+
+
 app.UseHttpsRedirection();
 
 app.UseRouting();

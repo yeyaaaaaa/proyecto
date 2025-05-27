@@ -18,9 +18,9 @@ namespace MyApp.Namespace
         }
 
         [BindProperty]
-        public Usuario Usuario { get; set; }
+        public Usuario? Usuario { get; set; }
         [BindProperty]
-        public Paciente Paciente { get; set; }
+        public Paciente? Paciente { get; set; }
 
         public void OnGet()
         {
@@ -33,8 +33,14 @@ namespace MyApp.Namespace
                 return Page();
             }
 
+            if (Usuario == null)
+            {
+                ModelState.AddModelError(string.Empty, "Datos de usuario no válidos.");
+                return Page();
+            }
+
             bool estaAfiliado = await _context.Afiliaciones
-                .AnyAsync(a => a.Usuario != null && a.Usuario.Documento == Usuario.Documento);
+                .AnyAsync(a => a.Documento != null && a.Documento == Usuario.Documento);
 
             if (!estaAfiliado)
             {
@@ -60,9 +66,12 @@ namespace MyApp.Namespace
             _context.Usuarios.Add(Usuario);
             await _context.SaveChangesAsync();
 
-            Paciente.UsuarioFK = Usuario.UsuarioID;
-            _context.Pacientes.Add(Paciente);
-            await _context.SaveChangesAsync();
+            if (Paciente != null && Usuario != null)
+            {
+                Paciente.UsuarioFK = Usuario.UsuarioID;
+                _context.Pacientes.Add(Paciente);
+                await _context.SaveChangesAsync();
+            }
 
             return RedirectToPage("/Login");
         }

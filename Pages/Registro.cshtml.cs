@@ -32,7 +32,7 @@ namespace Proyecto.Pages
             if (!ModelState.IsValid)
                 return Page();
 
-            // 1. Validar que el documento esté en Afiliaciones y que el estado sea Activo
+            // Validar que el documento esté en Afiliaciones y que el estado sea Activo
             var afiliacion = _context.Afiliaciones.FirstOrDefault(a =>
                 a.TipoDocumento == Registro.TipoDocumento
                 && a.Documento == Registro.Documento
@@ -44,7 +44,7 @@ namespace Proyecto.Pages
                 return Page();
             }
 
-            // 2. Validar que el documento NO exista ya en Usuario
+            // Validar que el documento NO exista ya en Usuario
             var existeUsuario = _context.Usuarios.Any(u =>
                 u.TipoDocumento == Registro.TipoDocumento &&
                 u.Documento == Registro.Documento
@@ -55,19 +55,11 @@ namespace Proyecto.Pages
                 return Page();
             }
 
-            // 3. Validar que el correo NO exista ya en Paciente
-            var existeCorreo = _context.Pacientes.Any(p => p.Correo == Registro.Correo);
-            if (existeCorreo)
-            {
-                Mensaje = "Ya existe un paciente registrado con ese correo.";
-                return Page();
-            }
-
-            // 4. Hash de la contraseña
+            // Hash de la contraseña
             var (hash, salt) = HashPassword(Registro.Contraseña);
 
-            // 5. Crear el Usuario (RolID paciente y Estado Activo)
-            // Asume que el RolID '2' es Paciente (ajusta si es otro)
+            // Crear el Usuario (RolID paciente y Estado Activo)
+            // Asume que el RolID '2' es Paciente
             var usuario = new Usuario
             {
                 TipoDocumento = Registro.TipoDocumento,
@@ -80,7 +72,7 @@ namespace Proyecto.Pages
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 
-            // 6. Crear el Paciente y enlazar
+            // Crear el Paciente y enlazar
             var paciente = new Paciente
             {
                 Nombres = Registro.Nombres,
@@ -96,7 +88,7 @@ namespace Proyecto.Pages
             _context.Pacientes.Add(paciente);
             await _context.SaveChangesAsync();
 
-            // 7. Redirigir a login o página de éxito
+            // Redirigir a login o página de éxito
             return RedirectToPage("/Login");
         }
 

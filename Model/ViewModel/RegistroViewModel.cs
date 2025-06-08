@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Proyecto.Models.ViewModels
+namespace Proyecto.Model.ViewModel
 {
     public class RegistroViewModel
     {

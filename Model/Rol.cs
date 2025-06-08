@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace proyecto.Models
+namespace Proyecto.Model
 {
     public class Rol
     {

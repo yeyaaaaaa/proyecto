@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Proyecto.Models.ViewModels;
+using Proyecto.Model.ViewModel;
 using Proyecto.Data;
-using Proyecto.Models;
+using Proyecto.Model;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Security.Cryptography;
@@ -12,8 +12,8 @@ namespace Proyecto.Pages
 {
     public class RegistroModel : PageModel
     {
-        private readonly LabDbContext _context;
-        public RegistroModel(LabDbContext context)
+        private readonly ProyectoDbContext _context;
+        public RegistroModel(ProyectoDbContext context)
         {
             _context = context;
         }

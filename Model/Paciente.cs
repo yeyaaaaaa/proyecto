@@ -24,6 +24,7 @@ namespace Proyecto.Model
         public string Sexo { get; set; }
 
         [Required]
+        [StringLength(20, MinimumLength = 6, ErrorMessage = "Ingrese un numero de teléfono válido")]
         public string Telefono { get; set; }
 
         [Required]

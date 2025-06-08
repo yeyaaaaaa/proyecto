@@ -1,26 +1,27 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using proyecto.Data;
-using proyecto.Models;
+using Proyecto.Models.ViewModels;
+using Proyecto.Data;
+using Proyecto.Models;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
-
-namespace MyApp.Namespace
+namespace Proyecto.Pages
 {
     public class RegistroModel : PageModel
     {
-        private readonly AppDbContext _context;
-
-        public RegistroModel(AppDbContext context)
+        private readonly LabDbContext _context;
+        public RegistroModel(LabDbContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-        public Usuario? Usuario { get; set; }
-        [BindProperty]
-        public Paciente? Paciente { get; set; }
+        public RegistroViewModel Registro { get; set; }
+
+        public string Mensaje { get; set; }
 
         public void OnGet()
         {
@@ -29,52 +30,94 @@ namespace MyApp.Namespace
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
+                return Page();
+
+            // 1. Validar que el documento esté en Afiliaciones y que el estado sea Activo
+            var afiliacion = _context.Afiliaciones.FirstOrDefault(a =>
+                a.TipoDocumento == Registro.TipoDocumento
+                && a.Documento == Registro.Documento
+                && a.Estado == "Activo"
+            );
+            if (afiliacion == null)
             {
+                Mensaje = "El documento ingresado no está afiliado a ninguna EPS aliada o la afiliación no está activa.";
                 return Page();
             }
 
-            if (Usuario == null)
+            // 2. Validar que el documento NO exista ya en Usuario
+            var existeUsuario = _context.Usuarios.Any(u =>
+                u.TipoDocumento == Registro.TipoDocumento &&
+                u.Documento == Registro.Documento
+            );
+            if (existeUsuario)
             {
-                ModelState.AddModelError(string.Empty, "Datos de usuario no válidos.");
+                Mensaje = "Ya existe un usuario registrado con ese número de documento.";
                 return Page();
             }
 
-            bool estaAfiliado = await _context.Afiliaciones
-                .AnyAsync(a => a.Documento != null && a.Documento == Usuario.Documento);
-
-            if (!estaAfiliado)
+            // 3. Validar que el correo NO exista ya en Paciente
+            var existeCorreo = _context.Pacientes.Any(p => p.Correo == Registro.Correo);
+            if (existeCorreo)
             {
-                ModelState.AddModelError(string.Empty, "Usted no está afiliado a una EPS registrada.");
+                Mensaje = "Ya existe un paciente registrado con ese correo.";
                 return Page();
             }
 
-            // Contar cuántos usuarios ya tienen el mismo Documento
-            int usuariosConDocumento = await _context.Usuarios
-                .CountAsync(u => u.Documento == Usuario.Documento);
+            // 4. Hash de la contraseña
+            var (hash, salt) = HashPassword(Registro.Contraseña);
 
-            if (usuariosConDocumento >= 2)
+            // 5. Crear el Usuario (RolID paciente y Estado Activo)
+            // Asume que el RolID '2' es Paciente (ajusta si es otro)
+            var usuario = new Usuario
             {
-                // Agregar error al modelo para mostrarlo en la vista
-                ModelState.AddModelError("Usuario.Documento", "No se pueden crear más de dos usuarios con el mismo documento.");
-                return Page();
-            }
-
-            // Asignar el rol de paciente
-            Usuario.RolFK = 2;
-
-            Usuario.Estado = true;
-            _context.Usuarios.Add(Usuario);
+                TipoDocumento = Registro.TipoDocumento,
+                Documento = Registro.Documento,
+                ContraseñaHash = hash,
+                Salt = salt,
+                RolID = 2,
+                Estado = "Activo"
+            };
+            _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 
-            if (Paciente != null && Usuario != null)
+            // 6. Crear el Paciente y enlazar
+            var paciente = new Paciente
             {
-                Paciente.UsuarioFK = Usuario.UsuarioID;
-                _context.Pacientes.Add(Paciente);
-                await _context.SaveChangesAsync();
-            }
+                Nombres = Registro.Nombres,
+                Apellidos = Registro.Apellidos,
+                Correo = Registro.Correo,
+                Sexo = Registro.Sexo,
+                Telefono = Registro.Telefono,
+                Direccion = Registro.Direccion,
+                Nacimiento = Registro.Nacimiento,
+                UsuarioFK = usuario.UsuarioID,
+                Estado = "Activo"
+            };
+            _context.Pacientes.Add(paciente);
+            await _context.SaveChangesAsync();
 
+            // 7. Redirigir a login o página de éxito
             return RedirectToPage("/Login");
         }
 
+        // Hash + salt seguro para contraseñas
+        private (string Hash, string Salt) HashPassword(string password)
+        {
+            // Genera un salt aleatorio
+            byte[] saltBytes = new byte[16];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(saltBytes);
+            }
+            string salt = Convert.ToBase64String(saltBytes);
+
+            // Hash con PBKDF2
+            using (var pbkdf2 = new Rfc2898DeriveBytes(password, saltBytes, 100_000, HashAlgorithmName.SHA256))
+            {
+                byte[] hashBytes = pbkdf2.GetBytes(32); // 256 bits
+                string hash = Convert.ToBase64String(hashBytes);
+                return (hash, salt);
+            }
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿@page
-@model MyApp.Namespace.RegistroModel
+@model Proyecto.Pages.RegistroModel
 @{
     ViewData["Title"] = "Registro";
 }
@@ -22,55 +22,81 @@
 <div class="mb-3">
     <h1 class="display-2 fw-normal text-center">Registrarse</h1>
 </div>
-<form method="post" class="fondo-transparente p-3 text-primary-emphasis border border-primary-subtle rounded-3 col-8 mx-auto">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger">@Model.Mensaje</div>
+}
+
+<form method="post">
     <div class="mb-3">
-        <label for="tipodoc" class="form-label">Tipo de documento de identidad</label>
-        <select class="form-select" id="tipodoc" required>
-            <option selected disabled value="">Selecciona uno</option>
-            <option value="1">Cedula de ciudadania</option>
-            <option value="2">Tarjeta de identidad</option>
+        <label asp-for="Registro.TipoDocumento"></label>
+        <select asp-for="Registro.TipoDocumento" class="form-select" required>
+            <option value="">Seleccione...</option>
+            <option value="CC">Cédula de Ciudadanía</option>
+            <option value="TI">Tarjeta de Identidad</option>
+            <option value="CE">Cédula de Extranjería</option>
         </select>
+        <span asp-validation-for="Registro.TipoDocumento" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label for="doc" class="form-label">Numero de documento</label>
-        <input type="number" class="form-control" id="doc" placeholder="Ingrese el numero de documento" asp-for="Usuario.Documento" required>
-        <span asp-validation-for="Usuario.Documento" class="text-danger"></span>
+        <label asp-for="Registro.Documento"></label>
+        <input asp-for="Registro.Documento" class="form-control" required />
+        <span asp-validation-for="Registro.Documento" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label for="name" class="form-label">Nombre</label>
-        <input type="text" class="form-control" id="name" placeholder="Ingrese el nombre completo" asp-for="Usuario.Nombre" required>
+        <label asp-for="Registro.Nombres"></label>
+        <input asp-for="Registro.Nombres" class="form-control" required />
+        <span asp-validation-for="Registro.Nombres" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label for="last" class="form-label">Apellidos</label>
-        <input type="text" class="form-control" id="last" placeholder="Ingrese los apellidos completos" asp-for="Usuario.Apellido" required>
+        <label asp-for="Registro.Apellidos"></label>
+        <input asp-for="Registro.Apellidos" class="form-control" required />
+        <span asp-validation-for="Registro.Apellidos" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label for="sex" class="form-label">Sexo</label>
-        <select class="form-select" id="sex" asp-for="Paciente.Sexo" required>
-            <option selected disabled value="">Selecciona uno</option>
-            <option value="1">Masculino</option>
-            <option value="2">Femenino</option>
+        <label asp-for="Registro.Correo"></label>
+        <input asp-for="Registro.Correo" class="form-control" required />
+        <span asp-validation-for="Registro.Correo" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Registro.Sexo"></label>
+        <select asp-for="Registro.Sexo" class="form-select" required>
+            <option value="">Seleccione...</option>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+            <option value="Otro">Otro</option>
         </select>
+        <span asp-validation-for="Registro.Sexo" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label for="cel" class="form-label">Celular</label>
-        <input type="number" class="form-control" id="cel" placeholder="Ingrese su numero de celular" asp-for="Paciente.Telefono" required>
+        <label asp-for="Registro.Telefono"></label>
+        <input asp-for="Registro.Telefono" class="form-control" required />
+        <span asp-validation-for="Registro.Telefono" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label for="dr" class="form-label">Direccion</label>
-        <input type="text" class="form-control" id="dr" placeholder="Ingrese su direccion" asp-for="Paciente.Direccion" required>
+        <label asp-for="Registro.Direccion"></label>
+        <input asp-for="Registro.Direccion" class="form-control" required />
+        <span asp-validation-for="Registro.Direccion" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label for="email" class="form-label">Correo electronico</label>
-        <input type="email" class="form-control" id="email" placeholder="Ingrese su correo electronico" asp-for="Usuario.Correo" required>
+        <label asp-for="Registro.Nacimiento"></label>
+        <input asp-for="Registro.Nacimiento" type="date" class="form-control" required />
+        <span asp-validation-for="Registro.Nacimiento" class="text-danger"></span>
     </div>
     <div class="mb-3">
-        <label for="password" class="form-label">Contraseña</label>
-        <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" asp-for="Usuario.Contraseña" required>
+        <label asp-for="Registro.Contraseña"></label>
+        <input asp-for="Registro.Contraseña" type="password" class="form-control" required />
+        <span asp-validation-for="Registro.Contraseña" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary d-grid col-4 mx-auto mb-3">Registrar</button>
-    <div class="text-center">
-        <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover " asp-page="/Login" role="button">Iniciar sesion</a>
+    <div class="mb-3">
+        <label asp-for="Registro.ConfirmarContraseña"></label>
+        <input asp-for="Registro.ConfirmarContraseña" type="password" class="form-control" required />
+        <span asp-validation-for="Registro.ConfirmarContraseña" class="text-danger"></span>
     </div>
+    <button type="submit" class="btn btn-primary">Registrarse</button>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

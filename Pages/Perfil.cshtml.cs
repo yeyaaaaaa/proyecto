@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Proyecto.Model.ViewModel;
 using Proyecto.Data;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using System;
 
 namespace Proyecto.Pages
 {
+    [Authorize]
     public class PerfilModel : PageModel
     {
         private readonly ProyectoDbContext _context;
@@ -27,7 +29,7 @@ namespace Proyecto.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            // Obtén el usuario logueado
+            // Usuario logueado
             var userDoc = User.Claims.FirstOrDefault(c => c.Type == "Documento")?.Value;
             if (string.IsNullOrEmpty(userDoc))
                 return RedirectToPage("/Login");
@@ -63,7 +65,13 @@ namespace Proyecto.Pages
                 Nombres = paciente.Nombres,
                 Apellidos = paciente.Apellidos,
                 Correo = paciente.Correo,
-                Sexo = paciente.Sexo,
+                Sexo = paciente.Sexo switch
+                {
+                    "M" => "Masculino",
+                    "F" => "Femenino",
+                    "Otro" => "Otro",
+                    _ => ""
+                },
                 Telefono = paciente.Telefono,
                 Direccion = paciente.Direccion,
                 Nacimiento = paciente.Nacimiento,
@@ -80,6 +88,11 @@ namespace Proyecto.Pages
             if (!ModelState.IsValid)
                 return Page();
 
+            // Solo el paciente autenticado puede editar su perfil
+            var userDoc = User.Claims.FirstOrDefault(c => c.Type == "Documento")?.Value;
+            if (string.IsNullOrEmpty(userDoc))
+                return RedirectToPage("/Login");
+
             var paciente = await _context.Pacientes
                 .Include(p => p.Usuario)
                 .FirstOrDefaultAsync(p => p.PacienteID == Perfil.PacienteID);
@@ -87,14 +100,26 @@ namespace Proyecto.Pages
             if (paciente == null)
                 return NotFound();
 
+            if (paciente.Usuario.Documento != userDoc)
+            {
+                // Intento de modificar perfil de otro usuario
+                Mensaje = "No tienes permisos para modificar este perfil.";
+                return Page();
+            }
+
             // Solo actualiza los campos permitidos
             paciente.Nombres = Perfil.Nombres;
             paciente.Apellidos = Perfil.Apellidos;
             paciente.Correo = Perfil.Correo;
-            paciente.Sexo = Perfil.Sexo;
+            paciente.Sexo = Perfil.Sexo switch
+            {
+                "Masculino" => "M",
+                "Femenino" => "F",
+                "Otro" => "Otro",
+                _ => ""
+            };
             paciente.Telefono = Perfil.Telefono;
             paciente.Direccion = Perfil.Direccion;
-            // paciente.Nacimiento NO se actualiza aquí
 
             await _context.SaveChangesAsync();
             Mensaje = "Información actualizada correctamente.";

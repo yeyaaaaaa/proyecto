@@ -4,11 +4,27 @@
     ViewData["Title"] = "Mi Perfil";
 }
 
+<style>
+    body {
+        background: url(/img/Fondos.jpg);
+        overflow-x: hidden;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        height: 100vh;
+    }
+    .fondo-transparente{
+        background-color: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(10px);
+    }
+</style>
+
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
-            <div class="card shadow border-0">
-                <div class="card-header bg-primary text-white">
+            <div class="card shadow border-0 fondo-transparente">
+                <div class="card-header display-2 fw-normal text-center">
                     <h3 class="mb-0"><i class="bi bi-person-circle me-2"></i>Mi Perfil</h3>
                 </div>
                 <div class="card-body">
@@ -20,6 +36,7 @@
                         </div>
                     }
                     <form method="post" autocomplete="off">
+                        <input type="hidden" asp-for="Perfil.PacienteID" />
                         <div class="mb-3">
                             <label class="form-label">Tipo Documento</label>
                             <input class="form-control-plaintext border-bottom" value="@Model.Perfil.TipoDocumento" readonly />
@@ -51,9 +68,9 @@
                             <label class="form-label">Sexo</label>
                             <select asp-for="Perfil.Sexo" class="form-select">
                                 <option value="">Seleccione...</option>
-                                <option value="Masculino" selected="@("Masculino" == Model.Perfil.Sexo)">Masculino</option>
-                                <option value="Femenino" selected="@("Femenino" == Model.Perfil.Sexo)">Femenino</option>
-                                <option value="Otro" selected="@("Otro" == Model.Perfil.Sexo)">Otro</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Femenino">Femenino</option>
+                                <option value="Otro">Otro</option>
                             </select>
                             <span asp-validation-for="Perfil.Sexo" class="text-danger small"></span>
                         </div>
@@ -72,9 +89,12 @@
                             <input asp-for="Perfil.Nacimiento" type="date" class="form-control-plaintext border-bottom" readonly />
                         </div>
                         <div class="d-grid">
-                            <button type="submit" class="btn btn-success btn-lg">
+                            <button type="submit" class="btn btn-success btn-lg mb-3">
                                 <i class="bi bi-save me-1"></i> Guardar Cambios
                             </button>
+                            <div class="text-center">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover " asp-page="/IndexPaciente" role="button">Regresar</a>
+                            </div>
                         </div>
                     </form>
                 </div>

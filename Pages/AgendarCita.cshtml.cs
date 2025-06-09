@@ -21,7 +21,6 @@ namespace Proyecto.Pages
         private static readonly TimeSpan HoraFin = new(12, 0, 0);
         private static readonly TimeSpan DuracionCita = new(0, 30, 0);
 
-        // Modifica el constructor para inyectar EmailService
         public AgendarCitaModel(ProyectoDbContext context, EmailService emailService)
         {
             _context = context;
@@ -45,9 +44,11 @@ namespace Proyecto.Pages
             return new JsonResult(DatosCita);
         }
 
-        public async Task<JsonResult> OnGetHorasDisponiblesAsync(DateTime fecha, int examenId)
+        public async Task<JsonResult> OnGetHorasDisponiblesAsync(string fecha, int examenId)
         {
-            var horasDisponibles = await CalcularHorasDisponibles(fecha, examenId);
+            if (!DateTime.TryParse(fecha, out var fechaDT))
+                return new JsonResult(new List<TimeSpan>());
+            var horasDisponibles = await CalcularHorasDisponibles(fechaDT, examenId);
             return new JsonResult(horasDisponibles);
         }
 
@@ -55,7 +56,6 @@ namespace Proyecto.Pages
         {
             await CargarDatosCalendario(DatosCita.ExamenID);
 
-            // Validación: ¿Cita para el mismo examen en los últimos 7 días?
             var userDoc = User.Claims.FirstOrDefault(c => c.Type == "Documento")?.Value;
             var paciente = await _context.Pacientes.Include(p => p.Usuario)
                                 .FirstOrDefaultAsync(p => p.Usuario.Documento == userDoc);
@@ -78,7 +78,6 @@ namespace Proyecto.Pages
                 return Page();
             }
 
-            // Validación: ¿El horario sigue disponible?
             var horasDisponibles = await CalcularHorasDisponibles(DatosCita.Fecha, DatosCita.ExamenID);
             if (!horasDisponibles.Contains(DatosCita.Hora))
             {
@@ -86,7 +85,6 @@ namespace Proyecto.Pages
                 return Page();
             }
 
-            // Crear la cita
             var cita = new Cita
             {
                 PacienteID = paciente.PacienteID,
@@ -101,13 +99,11 @@ namespace Proyecto.Pages
             _context.Citas.Add(cita);
             await _context.SaveChangesAsync();
 
-            // Enviar correo de confirmación 
             await EnviarCorreoConfirmacion(paciente, cita);
 
             Mensaje = "¡Cita agendada exitosamente! Revise su correo para los detalles y recomendaciones.";
             return RedirectToPage();
         }
-
 
         private async Task CargarDatosCalendario(int? examenId = null)
         {
@@ -116,12 +112,10 @@ namespace Proyecto.Pages
                 .Where(e => e.Estado == EstadoGeneral.Activo)
                 .ToListAsync();
 
-            // Rango de fechas: solo entre mañana y +1 mes
             var hoy = DateTime.Today;
             var desde = hoy.AddDays(1);
             var hasta = hoy.AddMonths(1);
 
-            // Número de enfermeros activos
             var enfermerosActivos = await _context.Enfermeros
                 .Include(e => e.Usuario)
                 .CountAsync(e => e.Usuario.Estado == EstadoGeneral.Activo);
@@ -153,8 +147,7 @@ namespace Proyecto.Pages
                 .CountAsync(e => e.Usuario.Estado == EstadoGeneral.Activo);
 
             int cupoPorHora = enfermerosActivos;
-            
-            // Generar todos los posibles slots de 30 minutos entre 6am y 12pm
+
             for (var hora = HoraInicio; hora < HoraFin; hora += DuracionCita)
             {
                 var citasEnHora = await _context.Citas
@@ -181,7 +174,7 @@ namespace Proyecto.Pages
                 <p>Por favor, presentar su orden médica el día de la cita y asistir con ayuno si es requerido por el examen.</p>
                 <p>¡Gracias por confiar en nuestro laboratorio!</p>";
 
-            await _emailService.SendEmailAsync(correo, asunto, cuerpo); // <-- Aquí se envía realmente el correo
+            await _emailService.SendEmailAsync(correo, asunto, cuerpo);
         }
     }
 }

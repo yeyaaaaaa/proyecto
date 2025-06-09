@@ -1,0 +1,48 @@
+﻿@page
+@model Proyecto.Pages.IndexPacienteModel
+@{
+    ViewData["Title"] = "Panel de Paciente";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-5">
+        Bienvenido, @Model.NombrePaciente
+    </h2>
+    <div class="row justify-content-center g-4 mb-5">
+        <div class="col-12 col-md-4">
+            <div class="card h-100 text-center shadow">
+                <div class="card-body">
+                    <i class="bi bi-calendar2-plus display-4 text-primary mb-2"></i>
+                    <h5 class="card-title mb-3">Agendar Cita</h5>
+                    <p class="card-text">Solicita una nueva cita médica con tu EPS.</p>
+                    <a href="/AgendarCita" class="btn btn-primary btn-lg w-100">Agendar</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card h-100 text-center shadow">
+                <div class="card-body">
+                    <i class="bi bi-file-earmark-medical display-4 text-success mb-2"></i>
+                    <h5 class="card-title mb-3">Resultados</h5>
+                    <p class="card-text">Consulta los resultados de tus exámenes y estudios.</p>
+                    <a href="/Resultados" class="btn btn-success btn-lg w-100">Ver Resultados</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card h-100 text-center shadow">
+                <div class="card-body">
+                    <i class="bi bi-person-circle display-4 text-secondary mb-2"></i>
+                    <h5 class="card-title mb-3">Perfil</h5>
+                    <p class="card-text">Consulta y edita tu información personal registrada.</p>
+                    <a href="/Perfil" class="btn btn-secondary btn-lg w-100">Ver Perfil</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mb-3">
+        <a href="/Logout" class="btn btn-outline-danger">
+            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+        </a>
+    </div>
+</div>

@@ -23,8 +23,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Account/Login";
-        options.LogoutPath = "/Account/Logout";
+        options.LoginPath = "/Login";
+        options.LogoutPath = "/Logout";
     });
 
 var app = builder.Build();
@@ -38,11 +38,11 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
 // Autenticación y autorización.
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseRouting();
 
 app.MapStaticAssets();
 app.MapRazorPages()

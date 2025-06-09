@@ -3,11 +3,28 @@
 @{
     ViewData["Title"] = "Agendar Cita";
 }
+
+<style>
+    body {
+        background: url(/img/Fondos.jpg);
+        overflow-x: hidden;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        height: 100vh;
+    }
+    .fondo-transparente{
+        background-color: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(10px);
+    }
+</style>
+
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
-            <div class="card shadow border-0">
-                <div class="card-header bg-primary text-white">
+            <div class="card shadow border-0 fondo-transparente">
+                <div class="card-header display-2 fw-normal text-center">
                     <h3 class="mb-0"><i class="bi bi-calendar-plus me-2"></i>Agendar Cita</h3>
                 </div>
                 <div class="card-body">
@@ -31,7 +48,7 @@
                             <input type="date" asp-for="DatosCita.Fecha" class="form-control" id="inputFecha"
                                 min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")"
                                 max="@DateTime.Today.AddMonths(1).ToString("yyyy-MM-dd")"
-                                onchange="cargarHorasDisponibles()" />
+                            />
                             <div id="infoDias" class="small mt-1"></div>
                         </div>
                         <div class="mb-3">
@@ -43,20 +60,15 @@
                         <button type="submit" class="btn btn-success btn-lg w-100">Agendar</button>
                     </form>
                     <div class="mt-4">
-                        <div class="alert alert-warning">
+                        <div class="alert alert-warning mb-3">
                             <b>Nota:</b> Solo puede agendar citas para el siguiente mes, no puede agendar el mismo examen dos veces en una semana y debe presentar orden médica el día de la cita.
                         </div>
+                        <div class="text-center">
+                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover " asp-page="/IndexPaciente" role="button">Regresar</a>
+                            </div>
                     </div>
                 </div>
             </div>
-            @* <div class="card mt-3">
-                <div class="card-header bg-secondary text-white">
-                    <i class="bi bi-calendar-week me-2"></i>Días ocupados (en rojo)
-                </div>
-                <div class="card-body">
-                    <div id="calendario"></div>
-                </div>
-            </div> *@
         </div>
     </div>
 </div>
@@ -67,7 +79,8 @@
         // Cargar días llenos y marcar en rojo
         const diasLlenos = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DatosCita.DiasLlenos.Select(d=>d.ToString("yyyy-MM-dd"))));
         const diasDisponibles = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DatosCita.DiasDisponibles.Select(d=>d.ToString("yyyy-MM-dd"))));
-        document.getElementById('inputFecha').addEventListener('input', function () {
+
+        document.getElementById('inputFecha').addEventListener('change', function () {
             const fecha = this.value;
             if (diasLlenos.includes(fecha)) {
                 document.getElementById('infoDias').innerHTML = "<span class='text-danger'>Este día está lleno. Elija otro día.</span>";
@@ -81,7 +94,6 @@
             }
         });
 
-        // Cargar horas disponibles según fecha y examen
         function cargarHorasDisponibles() {
             const fecha = document.getElementById('inputFecha').value;
             const examenId = document.getElementById('selectExamen').value;
@@ -97,7 +109,7 @@
                     document.getElementById('selectHora').innerHTML = options;
                 });
         }
-        // Cargar días y horas al cambiar examen
+
         document.getElementById('selectExamen').addEventListener('change', function () {
             document.getElementById('inputFecha').value = "";
             document.getElementById('infoDias').innerHTML = "";

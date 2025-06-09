@@ -51,6 +51,19 @@ namespace Proyecto.Pages
                 return Page();
             }
 
+            // Historial de login
+            bool loginExitoso = user != null && VerificarContraseña(Login.Password, user.ContraseñaHash, user.Salt) && user.Estado == EstadoGeneral.Activo;
+
+            var log = new LogSistema
+            {
+                UsuarioID = user?.UsuarioID ?? 0, 
+                Accion = loginExitoso ? "Login exitoso" : "Login fallido",
+                FechaHora = DateTime.Now,
+                Estado = loginExitoso ? EstadoGeneral.Activo : EstadoGeneral.Inactivo
+            };
+            _context.LogsSistema.Add(log);
+            await _context.SaveChangesAsync();
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Documento),

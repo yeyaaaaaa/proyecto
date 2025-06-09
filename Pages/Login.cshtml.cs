@@ -44,8 +44,8 @@ namespace Proyecto.Pages
                 return Page();
             }
 
-            // Estado: 1 = activo, 0 = inactivo
-            if (user.Estado != "1")
+            // Verifica si el usuario está activo
+            if (user.Estado != EstadoGeneral.Activo)
             {
                 ErrorMessage = "El usuario no está activo.";
                 return Page();

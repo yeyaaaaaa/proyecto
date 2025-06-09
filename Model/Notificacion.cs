@@ -26,8 +26,7 @@ namespace Proyecto.Model
         public DateTime Fecha { get; set; }
 
         [Required]
-        [MaxLength(1)]
-        public string Estado { get; set; }
+        public EstadoGeneral Estado { get; set; }
 
         public Usuario Usuario { get; set; }
     }

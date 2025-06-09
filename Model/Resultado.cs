@@ -21,9 +21,8 @@ namespace Proyecto.Model
         [DataType(DataType.DateTime)]
         public DateTime FechaSubida { get; set; }
 
-        [Required] 
-        [MaxLength(1)]
-        public string Estado { get; set; }
+        [Required]
+        public EstadoGeneral Estado { get; set; }
 
         public Cita Cita { get; set; }
     }

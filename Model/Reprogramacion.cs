@@ -22,8 +22,7 @@ namespace Proyecto.Model
         public string Motivo { get; set; }
 
         [Required]
-        [MaxLength(1)]
-        public string Estado { get; set; }
+        public EstadoGeneral Estado { get; set; }
 
         public Cita Cita { get; set; }
     }

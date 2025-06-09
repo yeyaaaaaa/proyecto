@@ -26,7 +26,7 @@ namespace Proyecto.Model
         public int RolID { get; set; }
 
         [Required]
-        public string Estado { get; set; }
+        public EstadoGeneral Estado { get; set; }
 
         public Rol Rol { get; set; }
         public ICollection<Notificacion> Notificaciones { get; set; }

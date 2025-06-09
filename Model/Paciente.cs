@@ -37,7 +37,7 @@ namespace Proyecto.Model
         public int UsuarioFK { get; set; }
 
         [Required]
-        public string Estado { get; set; }
+        public EstadoGeneral Estado { get; set; }
 
         public virtual Usuario Usuario { get; set; }
         public ICollection<Cita> Citas { get; set; }

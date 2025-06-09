@@ -36,7 +36,7 @@ namespace Proyecto.Pages
             var afiliacion = _context.Afiliaciones.FirstOrDefault(a =>
                 a.TipoDocumento == Registro.TipoDocumento
                 && a.Documento == Registro.Documento
-                && a.Estado == "1"
+                && a.Estado == EstadoGeneral.Activo
             );
             if (afiliacion == null)
             {
@@ -67,7 +67,7 @@ namespace Proyecto.Pages
                 ContraseñaHash = hash,
                 Salt = salt,
                 RolID = 2,
-                Estado = "1"
+                Estado = EstadoGeneral.Activo
             };
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
@@ -83,7 +83,7 @@ namespace Proyecto.Pages
                 Direccion = Registro.Direccion,
                 Nacimiento = Registro.Nacimiento,
                 UsuarioFK = usuario.UsuarioID,
-                Estado = "1"
+                Estado = EstadoGeneral.Activo
             };
             _context.Pacientes.Add(paciente);
             await _context.SaveChangesAsync();

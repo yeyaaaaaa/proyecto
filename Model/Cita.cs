@@ -27,8 +27,7 @@ namespace Proyecto.Model
         public int EstadoID { get; set; }
 
         [Required]
-        [MaxLength(1)]
-        public string Estado { get; set; }
+        public EstadoGeneral Estado { get; set; }
 
         public Paciente Paciente { get; set; }
         public Examen Examen { get; set; }

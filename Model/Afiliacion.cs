@@ -20,7 +20,7 @@ namespace Proyecto.Model
         public int EPSID { get; set; }
 
         [Required]
-        public string Estado { get; set; }
+        public EstadoGeneral Estado { get; set; }
 
         public EPS EPS { get; set; }
     }

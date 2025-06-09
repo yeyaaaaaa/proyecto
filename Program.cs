@@ -1,9 +1,10 @@
 using Proyecto.Data; 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Parte de la conexion a la base de datos
+// Parte de la conexion a la base de datos.
 builder.Services.AddDbContext<ProyectoDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -14,21 +15,30 @@ builder.Services.AddDbContext<ProyectoDbContext>(options =>
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+// Configuración de autenticación.
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 
-app.UseRouting();
-
+// Autenticación y autorización.
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseRouting();
 
 app.MapStaticAssets();
 app.MapRazorPages()

@@ -94,7 +94,10 @@
         <input asp-for="Registro.ConfirmarContraseña" type="password" class="form-control" required />
         <span asp-validation-for="Registro.ConfirmarContraseña" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Registrarse</button>
+    <button type="submit" class="btn btn-primary d-grid col-4 mx-auto mb-3">Registrarse</button>
+    <div class="text-center">
+    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover " asp-page="/Login" role="button">Ingresar</a>
+    </div>
 </form>
 
 @section Scripts {

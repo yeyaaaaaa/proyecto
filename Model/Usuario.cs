@@ -14,13 +14,9 @@ namespace Proyecto.Model
         public string TipoDocumento { get; set; }
 
         [Required]
-        [StringLength(20, MinimumLength = 6, ErrorMessage = "El documento debe tener entre 6 y 20 caracteres")]
         public string Documento { get; set; }
 
         [Required]
-        [StringLength(100, MinimumLength = 8, ErrorMessage = "La contraseña debe tener mínimo 8 caracteres")]
-        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$", 
-        ErrorMessage = "La contraseña debe contener al menos una mayúscula, una minúscula, un número y un símbolo")]
         public string ContraseñaHash { get; set; }
 
         [Required]

@@ -14,7 +14,6 @@ namespace Proyecto.Model
         public string TipoDocumento { get; set; }
 
         [Required]
-        [StringLength(20, MinimumLength = 6, ErrorMessage = "El documento debe tener entre 6 y 20 caracteres")]
         public string Documento { get; set; }
 
         [Required]

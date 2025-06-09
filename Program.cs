@@ -1,8 +1,12 @@
-using Proyecto.Data; 
+using Proyecto.Data;
+using Proyecto.Model.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+builder.Services.AddTransient<Proyecto.Services.EmailService>();
 
 // Parte de la conexion a la base de datos.
 builder.Services.AddDbContext<ProyectoDbContext>(options =>

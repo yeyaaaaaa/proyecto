@@ -17,9 +17,6 @@ namespace Proyecto.Model
         public string Descripcion { get; set; }
 
         [Required]
-        public int Duracion { get; set; }
-
-        [Required]
         public EstadoGeneral Estado { get; set; }
 
         public ICollection<Cita> Citas { get; set; }

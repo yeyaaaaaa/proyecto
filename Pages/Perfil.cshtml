@@ -1,0 +1,88 @@
+﻿@page
+@model Proyecto.Pages.PerfilModel
+@{
+    ViewData["Title"] = "Mi Perfil";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="bi bi-person-circle me-2"></i>Mi Perfil</h3>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.Mensaje))
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @Model.Mensaje
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    <form method="post" autocomplete="off">
+                        <div class="mb-3">
+                            <label class="form-label">Tipo Documento</label>
+                            <input class="form-control-plaintext border-bottom" value="@Model.Perfil.TipoDocumento" readonly />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Documento</label>
+                            <input class="form-control-plaintext border-bottom" value="@Model.Perfil.Documento" readonly />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">EPS Afiliado</label>
+                            <input class="form-control-plaintext border-bottom" value="@Model.Perfil.NombreEPS" readonly />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nombres</label>
+                            <input asp-for="Perfil.Nombres" class="form-control" />
+                            <span asp-validation-for="Perfil.Nombres" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Apellidos</label>
+                            <input asp-for="Perfil.Apellidos" class="form-control" />
+                            <span asp-validation-for="Perfil.Apellidos" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Correo</label>
+                            <input asp-for="Perfil.Correo" type="email" class="form-control" />
+                            <span asp-validation-for="Perfil.Correo" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Sexo</label>
+                            <select asp-for="Perfil.Sexo" class="form-select">
+                                <option value="">Seleccione...</option>
+                                <option value="Masculino" selected="@("Masculino" == Model.Perfil.Sexo)">Masculino</option>
+                                <option value="Femenino" selected="@("Femenino" == Model.Perfil.Sexo)">Femenino</option>
+                                <option value="Otro" selected="@("Otro" == Model.Perfil.Sexo)">Otro</option>
+                            </select>
+                            <span asp-validation-for="Perfil.Sexo" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Teléfono</label>
+                            <input asp-for="Perfil.Telefono" class="form-control" />
+                            <span asp-validation-for="Perfil.Telefono" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Dirección</label>
+                            <input asp-for="Perfil.Direccion" class="form-control" />
+                            <span asp-validation-for="Perfil.Direccion" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Fecha de Nacimiento</label>
+                            <input asp-for="Perfil.Nacimiento" type="date" class="form-control-plaintext border-bottom" readonly />
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-save me-1"></i> Guardar Cambios
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,107 @@
+﻿@page
+@model Proyecto.Pages.AgendarCitaModel
+@{
+    ViewData["Title"] = "Agendar Cita";
+}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="bi bi-calendar-plus me-2"></i>Agendar Cita</h3>
+                </div>
+                <div class="card-body">
+                    @if (!string.IsNullOrEmpty(Model.Mensaje))
+                    {
+                        <div class="alert alert-info">@Model.Mensaje</div>
+                    }
+                    <form method="post" id="formAgendar">
+                        <div class="mb-3">
+                            <label class="form-label">Examen</label>
+                            <select asp-for="DatosCita.ExamenID" class="form-select" id="selectExamen">
+                                <option value="">Seleccione...</option>
+                                @foreach (var ex in Model.DatosCita.ExamenesDisponibles)
+                                {
+                                    <option value="@ex.ExamenID">@ex.Nombre</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Seleccione día</label>
+                            <input type="date" asp-for="DatosCita.Fecha" class="form-control" id="inputFecha"
+                                min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")"
+                                max="@DateTime.Today.AddMonths(1).ToString("yyyy-MM-dd")"
+                                onchange="cargarHorasDisponibles()" />
+                            <div id="infoDias" class="small mt-1"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Seleccione hora</label>
+                            <select asp-for="DatosCita.Hora" class="form-select" id="selectHora">
+                                <option value="">Seleccione...</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-lg w-100">Agendar</button>
+                    </form>
+                    <div class="mt-4">
+                        <div class="alert alert-warning">
+                            <b>Nota:</b> Solo puede agendar citas para el siguiente mes, no puede agendar el mismo examen dos veces en una semana y debe presentar orden médica el día de la cita.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @* <div class="card mt-3">
+                <div class="card-header bg-secondary text-white">
+                    <i class="bi bi-calendar-week me-2"></i>Días ocupados (en rojo)
+                </div>
+                <div class="card-body">
+                    <div id="calendario"></div>
+                </div>
+            </div> *@
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Cargar días llenos y marcar en rojo
+        const diasLlenos = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DatosCita.DiasLlenos.Select(d=>d.ToString("yyyy-MM-dd"))));
+        const diasDisponibles = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DatosCita.DiasDisponibles.Select(d=>d.ToString("yyyy-MM-dd"))));
+        document.getElementById('inputFecha').addEventListener('input', function () {
+            const fecha = this.value;
+            if (diasLlenos.includes(fecha)) {
+                document.getElementById('infoDias').innerHTML = "<span class='text-danger'>Este día está lleno. Elija otro día.</span>";
+                document.getElementById('selectHora').innerHTML = "<option>Seleccione...</option>";
+            } else if (!diasDisponibles.includes(fecha)) {
+                document.getElementById('infoDias').innerHTML = "<span class='text-warning'>Día no disponible.</span>";
+                document.getElementById('selectHora').innerHTML = "<option>Seleccione...</option>";
+            } else {
+                document.getElementById('infoDias').innerHTML = "<span class='text-success'>Día disponible.</span>";
+                cargarHorasDisponibles();
+            }
+        });
+
+        // Cargar horas disponibles según fecha y examen
+        function cargarHorasDisponibles() {
+            const fecha = document.getElementById('inputFecha').value;
+            const examenId = document.getElementById('selectExamen').value;
+            if (!fecha || !examenId) return;
+            fetch(`@Url.Page("AgendarCita", "HorasDisponibles")?fecha=${fecha}&examenId=${examenId}`)
+                .then(resp => resp.json())
+                .then(horas => {
+                    let options = "<option value=''>Seleccione...</option>";
+                    horas.forEach(hora => {
+                        // hora: "HH:mm:ss"
+                        options += `<option value="${hora}">${hora.substring(0,5)}</option>`;
+                    });
+                    document.getElementById('selectHora').innerHTML = options;
+                });
+        }
+        // Cargar días y horas al cambiar examen
+        document.getElementById('selectExamen').addEventListener('change', function () {
+            document.getElementById('inputFecha').value = "";
+            document.getElementById('infoDias').innerHTML = "";
+            document.getElementById('selectHora').innerHTML = "<option>Seleccione...</option>";
+        });
+    </script>
+}

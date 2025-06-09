@@ -81,7 +81,7 @@ namespace Proyecto.Pages
             switch (user.Rol.Nombre.ToLower())
             {
                 case "paciente":
-                    return RedirectToPage("/Paciente/Index");
+                    return RedirectToPage("/AgendarCita");
                 case "enfermero":
                     return RedirectToPage("/Enfermero/Index");
                 case "administrador":

@@ -9,7 +9,9 @@ C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\proyecto.dll
 C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\proyecto.pdb
 C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\Azure.Core.dll
 C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\Azure.Identity.dll
+C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\BouncyCastle.Cryptography.dll
 C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\Humanizer.dll
+C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\MailKit.dll
 C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\Microsoft.CodeAnalysis.dll
 C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\Microsoft.CodeAnalysis.CSharp.dll
@@ -32,8 +34,10 @@ C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\Microsoft.Identity
 C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\Microsoft.SqlServer.Server.dll
 C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\MimeKit.dll
 C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\Mono.TextTemplating.dll
 C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\MySqlConnector.dll
+C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\Newtonsoft.Json.dll
 C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\Pomelo.EntityFrameworkCore.MySql.dll
 C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\System.ClientModel.dll
 C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\System.CodeDom.dll

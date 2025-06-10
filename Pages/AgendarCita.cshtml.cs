@@ -54,6 +54,13 @@ namespace Proyecto.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (DatosCita.Fecha == DateTime.MinValue || DatosCita.Hora == TimeSpan.Zero)
+            {
+                Mensaje = "Debe seleccionar una fecha y una hora válidas.";
+                await CargarDatosCalendario(DatosCita.ExamenID);
+                return Page();
+            }
+
             await CargarDatosCalendario(DatosCita.ExamenID);
 
             var userDoc = User.Claims.FirstOrDefault(c => c.Type == "Documento")?.Value;

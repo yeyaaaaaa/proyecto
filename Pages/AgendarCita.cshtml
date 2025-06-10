@@ -98,7 +98,7 @@
             const fecha = document.getElementById('inputFecha').value;
             const examenId = document.getElementById('selectExamen').value;
             if (!fecha || !examenId) return;
-            fetch(`@Url.Page("AgendarCita", "HorasDisponibles")?fecha=${fecha}&examenId=${examenId}`)
+            fetch(`@Url.Page("AgendarCita", "HorasDisponibles")&fecha=${fecha}&examenId=${examenId}`)
                 .then(resp => resp.json())
                 .then(horas => {
                     let options = "<option value=''>Seleccione...</option>";

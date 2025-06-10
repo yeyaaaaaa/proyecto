@@ -39,7 +39,7 @@ namespace Proyecto.Pages
             var primerDiaSemana = hoy.AddDays(-(int)hoy.DayOfWeek);
             var diasSemana = Enumerable.Range(0, 7).Select(i => primerDiaSemana.AddDays(i)).ToList();
 
-            // FILTRAR SOLO CITAS DEL ENFERMERO LOGUEADO (con EnfermeroID)
+            // Solo citas del enfermero logueado
             var citasSemana = await _context.Citas
                 .Include(c => c.Paciente)
                 .Include(c => c.Examen)
@@ -47,7 +47,8 @@ namespace Proyecto.Pages
                 .Where(c => c.FechaHora.Date >= diasSemana.First()
                             && c.FechaHora.Date <= diasSemana.Last()
                             && c.Estado == EstadoGeneral.Activo
-                            && c.EnfermeroID == enfermero.EnfermeroID)
+                            // && c.EnfermeroID == enfermero.EnfermeroID
+                            )
                 .OrderBy(c => c.FechaHora)
                 .ToListAsync();
 
@@ -110,17 +111,26 @@ namespace Proyecto.Pages
         // Handler para subir archivo de resultado para una cita
         public async Task<IActionResult> OnPostSubirResultadoAsync(int citaId, IFormFile archivo)
         {
-            if (archivo == null || archivo.Length == 0) return BadRequest();
+            if (archivo == null || archivo.Length == 0)
+            {
+                TempData["MensajeError"] = "Debes seleccionar un archivo PDF.";
+                return RedirectToPage();
+            }
 
-            // Valida extensión
             var extension = Path.GetExtension(archivo.FileName).ToLowerInvariant();
             if (extension != ".pdf")
-                return BadRequest("Solo se permiten archivos PDF.");
+            {
+                TempData["MensajeError"] = "Solo se permiten archivos PDF.";
+                return RedirectToPage();
+            }
 
             var cita = await _context.Citas.Include(c => c.Resultado).FirstOrDefaultAsync(c => c.CitaID == citaId);
-            if (cita == null) return NotFound();
+            if (cita == null)
+            {
+                TempData["MensajeError"] = "No se encontró la cita.";
+                return RedirectToPage();
+            }
 
-            // Nombre único para evitar colisiones
             var nombreArchivo = $"{Guid.NewGuid()}{extension}";
             var rutaCarpeta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Resultados");
             if (!Directory.Exists(rutaCarpeta))
@@ -152,6 +162,7 @@ namespace Proyecto.Pages
             }
 
             await _context.SaveChangesAsync();
+            TempData["MensajeExito"] = "El archivo se subió correctamente.";
             return RedirectToPage();
         }
     }

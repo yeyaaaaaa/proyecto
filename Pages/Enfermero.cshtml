@@ -1,97 +1,117 @@
 ﻿@page
 @model Proyecto.Pages.EnfermeroModel
+@using Proyecto.Model.ViewModel
 @{
-    ViewData["Title"] = "Calendario semanal de citas";
-    Layout = "_Layout";
+    ViewData["Title"] = "Calendario de Citas del Enfermero";
+    var mensajeExito = TempData["MensajeExito"] as string;
+    var mensajeError = TempData["MensajeError"] as string;
 }
 
-<div class="mb-4 text-center">
-    <h2>Calendario semanal (@Model.ViewModel.Mes/@Model.ViewModel.Anio)</h2>
-</div>
-<div class="row justify-content-center">
-    @foreach (var dia in Model.ViewModel.DiasSemana)
-    {
-        <div class="col-12 col-md-3 col-lg-2 mb-3">
-            <div class="card h-100">
-                <div class="card-header text-center fw-bold bg-light">
-                    @dia.Fecha.ToString("dddd", new System.Globalization.CultureInfo("es-ES"))<br />
-                    <span class="display-6">@dia.Fecha.Day</span>
-                </div>
-                <div class="card-body p-2">
+<h2>Calendario semanal de citas</h2>
+
+<!-- Mostrar mensajes de éxito o error -->
+@if (!string.IsNullOrEmpty(mensajeExito))
+{
+    <div class="alert alert-success" role="alert">@mensajeExito</div>
+}
+@if (!string.IsNullOrEmpty(mensajeError))
+{
+    <div class="alert alert-danger" role="alert">@mensajeError</div>
+}
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            @foreach (var dia in Model.ViewModel.DiasSemana)
+            {
+                <th>@dia.Fecha.ToString("dddd dd/MM")</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            @foreach (var dia in Model.ViewModel.DiasSemana)
+            {
+                <td>
                     @if (dia.Citas.Any())
                     {
-                        foreach (var cita in dia.Citas)
-                        {
-                            <button type="button"
-                                    class="btn btn-outline-success btn-sm w-100 mb-2 text-start"
-                                    data-cita-id="@cita.CitaID"
-                                    onclick="mostrarDetalleCita(@cita.CitaID)">
-                                <b>@cita.Hora.ToString(@"hh\:mm")</b>
-                                <br />
-                                @cita.PacienteNombre
-                                <br />
-                                <small>@cita.ExamenNombre</small>
-                            </button>
-                        }
+                        <ul class="list-unstyled">
+                            @foreach (var cita in dia.Citas)
+                            {
+                                <li>
+                                    <strong>@cita.Hora.ToString(@"hh\:mm")</strong> - @cita.PacienteNombre <br />
+                                    <span>@cita.ExamenNombre</span>
+                                    <button class="btn btn-link btn-sm p-0" onclick="mostrarDetalle(@cita.CitaID)">Ver detalle</button>
+                                    <!-- Formulario para subir archivo PDF -->
+                                    <form asp-page-handler="SubirResultado" method="post" enctype="multipart/form-data" style="display:inline;">
+                                        <input type="hidden" name="citaId" value="@cita.CitaID" />
+                                        <input type="file" name="archivo" accept="application/pdf" style="display:inline;" required />
+                                        <button type="submit" class="btn btn-primary btn-sm">Subir PDF</button>
+                                    </form>
+                                </li>
+                                <hr />
+                            }
+                        </ul>
                     }
                     else
                     {
-                        <span class="text-muted small">Sin citas</span>
+                        <span class="text-muted">Sin citas</span>
                     }
-                </div>
-            </div>
-        </div>
-    }
-</div>
-<div class="d-flex justify-content-end mb-3">
-    <a href="/Logout" class="btn btn-outline-danger">
-        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
-    </a>
-</div>
+                </td>
+            }
+        </tr>
+    </tbody>
+</table>
 
-<!-- Modal para detalle -->
-<div class="modal fade" id="modalDetalleCita" tabindex="-1" aria-labelledby="detalleCitaLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<!-- Modal para detalle de cita -->
+<div class="modal fade" id="detalleCitaModal" tabindex="-1" role="dialog" aria-labelledby="detalleCitaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="detalleCitaLabel">Detalle de la Cita</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <h5 class="modal-title">Detalle de la cita</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar" onclick="cerrarDetalle()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="modal-body" id="detalleCitaContenido">
-                <!-- Aquí se cargará el detalle dinámicamente -->
+            <div class="modal-body" id="detalleCitaBody">
+                <!-- Detalle de la cita se cargará por AJAX -->
+                <div class="text-center">
+                    <span class="spinner-border"></span>
+                    <span>Cargando...</span>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 @section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS necesario para el modal -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        function mostrarDetalleCita(citaId) {
-            fetch(`/Enfermero?handler=DetalleCita&citaId=${citaId}`)
-                .then(res => res.json())
-                .then(data => {
-                    let html = `
-                        <b>Paciente:</b> ${data.pacienteNombre}<br>
-                        <b>Correo:</b> ${data.pacienteCorreo}<br>
-                        <b>Teléfono:</b> ${data.pacienteTelefono}<br>
-                        <b>Dirección:</b> ${data.pacienteDireccion}<br>
-                        <b>Nacimiento:</b> ${data.pacienteNacimiento?.substring(0, 10) || ""}<hr>
-                        <b>Examen:</b> ${data.examenNombre}<br>
-                        <b>Descripción:</b> ${data.examenDescripcion || ""}<br>
-                        <b>Indicaciones:</b> ${data.examenIndicaciones || ""}<hr>
-                        <form method="post" enctype="multipart/form-data" action="/Enfermero?handler=SubirResultado">
-                            <input type="hidden" name="citaId" value="${data.citaID}" />
-                            <div class="mb-2">
-                                <label>Adjuntar resultado:</label>
-                                <input type="file" name="archivo" class="form-control" required />
-                            </div>
-                            <button type="submit" class="btn btn-success btn-sm">Subir resultado</button>
-                            ${data.resultadoRutaArchivo ? `<div class="mt-2"><a href="${data.resultadoRutaArchivo}" target="_blank">Ver resultado actual</a></div>` : ""}
-                        </form>`;
-                    document.getElementById('detalleCitaContenido').innerHTML = html;
-                    var modal = new bootstrap.Modal(document.getElementById('modalDetalleCita'));
-                    modal.show();
-                });
+        function mostrarDetalle(citaId) {
+            $('#detalleCitaModal').modal('show');
+            $("#detalleCitaBody").html('<div class="text-center"><span class="spinner-border"></span> <span>Cargando...</span></div>');
+            $.get('@Url.Page("Enfermero", "DetalleCita")', { citaId: citaId }, function (data) {
+                var html = '';
+                html += '<b>Fecha y hora:</b> ' + new Date(data.fechaHora).toLocaleString() + '<br />';
+                html += '<b>Estado:</b> ' + data.estado + '<br />';
+                html += '<b>Paciente:</b> ' + data.pacienteNombre + ' (' + data.pacienteCorreo + ')<br />';
+                html += '<b>Teléfono:</b> ' + data.pacienteTelefono + '<br />';
+                html += '<b>Dirección:</b> ' + data.pacienteDireccion + '<br />';
+                html += '<b>Nacimiento:</b> ' + (data.pacienteNacimiento ? new Date(data.pacienteNacimiento).toLocaleDateString() : '') + '<br />';
+                html += '<b>Examen:</b> ' + data.examenNombre + '<br />';
+                html += '<b>Descripción:</b> ' + data.examenDescripcion + '<br />';
+                if (data.resultadoRutaArchivo) {
+                    html += '<b>Resultado:</b> <a href="' + data.resultadoRutaArchivo + '" target="_blank">Ver PDF</a><br />';
+                }
+                $("#detalleCitaBody").html(html);
+            });
+        }
+        function cerrarDetalle() {
+            $('#detalleCitaModal').modal('hide');
+            $("#detalleCitaBody").html("");
         }
     </script>
 }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Proyecto.Model.ViewModel;
 using Proyecto.Model;
@@ -10,6 +11,7 @@ using Proyecto.Data;
 
 namespace Proyecto.Pages
 {
+    [Authorize(Roles = "Enfermero")]
     public class EnfermeroModel : PageModel
     {
         private readonly ProyectoDbContext _context;
@@ -41,7 +43,9 @@ namespace Proyecto.Pages
                 .Include(c => c.Paciente)
                 .Include(c => c.Examen)
                 .Include(c => c.Resultado)
-                .Where(c => c.FechaHora.Date >= diasSemana.First() && c.FechaHora.Date <= diasSemana.Last())
+                .Where(c => c.FechaHora.Date >= diasSemana.First()
+                            && c.FechaHora.Date <= diasSemana.Last()
+                            && c.Estado == EstadoGeneral.Activo) // SOLO ACTIVAS
                 .OrderBy(c => c.FechaHora)
                 .ToListAsync();
 
@@ -76,6 +80,7 @@ namespace Proyecto.Pages
                 .Include(c => c.Paciente)
                 .Include(c => c.Examen)
                 .Include(c => c.Resultado)
+                .Include(c => c.EstadoCita)
                 .FirstOrDefaultAsync(c => c.CitaID == citaId);
 
             if (cita == null) return NotFound();
@@ -93,15 +98,14 @@ namespace Proyecto.Pages
                 PacienteNacimiento = cita.Paciente.Nacimiento,
                 ExamenNombre = cita.Examen.Nombre,
                 ExamenDescripcion = cita.Examen.Descripcion,
-                ExamenIndicaciones = null, // No existe en modelo, ponlo como null o ""
-                ResultadoRutaArchivo = cita.Resultado?.ArchivoPDF // ArchivoPDF es el nombre de la propiedad para el archivo subido
+                ExamenIndicaciones = "", // No existe en modelo
+                ResultadoRutaArchivo = cita.Resultado?.ArchivoPDF
             };
 
             return new JsonResult(detalle);
         }
 
         // Handler para subir archivo de resultado para una cita
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostSubirResultadoAsync(int citaId, IFormFile archivo)
         {
             if (archivo == null || archivo.Length == 0) return BadRequest();

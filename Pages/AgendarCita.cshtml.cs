@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Proyecto.Data;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Proyecto.Pages
 {
+    [Authorize(Roles = "Paciente")]
     public class AgendarCitaModel : PageModel
     {
         private readonly ProyectoDbContext _context;

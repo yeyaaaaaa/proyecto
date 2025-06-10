@@ -1,0 +1,47 @@
+﻿@page
+@model Proyecto.Pages.ResultadosModel
+@{
+    ViewData["Title"] = "Resultados de Exámenes";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Resultados de Exámenes</h2>
+
+    @if (Model.Resultados.Count == 0)
+    {
+        <div class="alert alert-info">Aún no tienes resultados disponibles.</div>
+    }
+    else
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Examen</th>
+                    <th>Fecha de cita</th>
+                    <th>Descargar resultado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Resultados)
+                {
+                    <tr>
+                        <td>@item.ExamenNombre</td>
+                        <td>@item.FechaHora.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.RutaArchivo))
+                            {
+                                <a class="btn btn-success btn-sm" href="@item.RutaArchivo" target="_blank">
+                                    Descargar PDF
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">No disponible</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

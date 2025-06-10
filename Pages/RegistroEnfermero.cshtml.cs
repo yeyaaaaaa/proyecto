@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Proyecto.Model.ViewModel;
 using Proyecto.Data;
@@ -10,6 +11,7 @@ using System.Text;
 
 namespace Proyecto.Pages
 {
+    [Authorize(Roles = "Administrador")]
     public class RegistroEnfermeroModel : PageModel
     {
         private readonly ProyectoDbContext _context;
@@ -59,7 +61,7 @@ namespace Proyecto.Pages
                 Documento = Registro.Documento,
                 ContraseñaHash = hash,
                 Salt = salt,
-                RolID = 3, 
+                RolID = 3,
                 Estado = EstadoGeneral.Activo
             };
             _context.Usuarios.Add(usuario);

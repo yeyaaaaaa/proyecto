@@ -8,6 +8,44 @@
     <h2 class="text-center mb-5">
         Bienvenido, @Model.NombrePaciente
     </h2>
+
+    <!-- Tabla de citas agendadas -->
+    <div class="mb-5">
+        <h4 class="mb-3">Tus Citas Agendadas</h4>
+        @if (Model.Citas != null && Model.Citas.Count > 0)
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Examen</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var cita in Model.Citas)
+                {
+                    <tr>
+                        <td>@cita.Examen?.Nombre</td>
+                        <td>@cita.FechaHora.ToString("yyyy-MM-dd")</td>
+                        <td>@cita.FechaHora.ToString("HH:mm")</td>
+                        <td>
+                            <form method="post" asp-page-handler="CancelarCita" asp-route-citaId="@cita.CitaID" onsubmit="return confirm('¿Seguro que desea cancelar esta cita?');">
+                                <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-info">No tienes citas agendadas próximamente.</div>
+        }
+    </div>
+
     <div class="row justify-content-center g-4 mb-5">
         <div class="col-12 col-md-4">
             <div class="card h-100 text-center shadow">

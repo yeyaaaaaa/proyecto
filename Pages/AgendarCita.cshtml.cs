@@ -96,6 +96,35 @@ namespace Proyecto.Pages
                 return Page();
             }
 
+            // --- ASIGNACIÓN AUTOMÁTICA Y EQUITATIVA DE ENFERMERO ---
+            var enfermerosActivos = await _context.Enfermeros
+                .Include(e => e.Usuario)
+                .Where(e => e.Usuario.Estado == EstadoGeneral.Activo)
+                .ToListAsync();
+
+            if (!enfermerosActivos.Any())
+            {
+                Mensaje = "No hay enfermeros disponibles para asignar la cita.";
+                return Page();
+            }
+
+            // Busca el enfermero con menos citas asignadas en esa fecha/hora
+            var enfermeroConMenosCitas = enfermerosActivos
+                .Select(e => new
+                {
+                    Enfermero = e,
+                    CitasCount = _context.Citas.Count(c =>
+                        c.EnfermeroID == e.EnfermeroID &&
+                        c.FechaHora.Date == DatosCita.Fecha.Date &&
+                        c.FechaHora.TimeOfDay == DatosCita.Hora &&
+                        c.Estado == EstadoGeneral.Activo)
+                })
+                .OrderBy(x => x.CitasCount)
+                .ThenBy(x => x.Enfermero.EnfermeroID)
+                .First()
+                .Enfermero;
+
+            // --- CREACIÓN DE LA CITA ---
             var cita = new Cita
             {
                 PacienteID = paciente.PacienteID,
@@ -105,7 +134,8 @@ namespace Proyecto.Pages
                                     .Where(e => e.Descripcion == "Reservada")
                                     .Select(e => e.EstadoID)
                                     .FirstOrDefaultAsync(),
-                Estado = EstadoGeneral.Activo
+                Estado = EstadoGeneral.Activo,
+                EnfermeroID = enfermeroConMenosCitas.EnfermeroID // Asignación automática aquí
             };
             _context.Citas.Add(cita);
             await _context.SaveChangesAsync();

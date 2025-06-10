@@ -47,7 +47,7 @@ namespace Proyecto.Pages
                 .Where(c => c.FechaHora.Date >= diasSemana.First()
                             && c.FechaHora.Date <= diasSemana.Last()
                             && c.Estado == EstadoGeneral.Activo
-                            // && c.EnfermeroID == enfermero.EnfermeroID
+                            && c.EnfermeroID == enfermero.EnfermeroID
                             )
                 .OrderBy(c => c.FechaHora)
                 .ToListAsync();

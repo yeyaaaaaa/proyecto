@@ -1,0 +1,92 @@
+﻿@page
+@model Proyecto.Pages.EnfermeroModel
+@{
+    ViewData["Title"] = "Calendario semanal de citas";
+    Layout = "_Layout";
+}
+
+<div class="mb-4 text-center">
+    <h2>Calendario semanal (@Model.ViewModel.Mes/@Model.ViewModel.Anio)</h2>
+</div>
+<div class="row justify-content-center">
+    @foreach (var dia in Model.ViewModel.DiasSemana)
+    {
+        <div class="col-12 col-md-3 col-lg-2 mb-3">
+            <div class="card h-100">
+                <div class="card-header text-center fw-bold bg-light">
+                    @dia.Fecha.ToString("dddd", new System.Globalization.CultureInfo("es-ES"))<br />
+                    <span class="display-6">@dia.Fecha.Day</span>
+                </div>
+                <div class="card-body p-2">
+                    @if (dia.Citas.Any())
+                    {
+                        foreach (var cita in dia.Citas)
+                        {
+                            <button type="button"
+                                    class="btn btn-outline-success btn-sm w-100 mb-2 text-start"
+                                    data-cita-id="@cita.CitaID"
+                                    onclick="mostrarDetalleCita(@cita.CitaID)">
+                                <b>@cita.Hora.ToString(@"hh\:mm")</b>
+                                <br />
+                                @cita.PacienteNombre
+                                <br />
+                                <small>@cita.ExamenNombre</small>
+                            </button>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-muted small">Sin citas</span>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Modal para detalle -->
+<div class="modal fade" id="modalDetalleCita" tabindex="-1" aria-labelledby="detalleCitaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detalleCitaLabel">Detalle de la Cita</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="detalleCitaContenido">
+                <!-- Aquí se cargará el detalle dinámicamente -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function mostrarDetalleCita(citaId) {
+            fetch(`/Enfermero?handler=DetalleCita&citaId=${citaId}`)
+                .then(res => res.json())
+                .then(data => {
+                    let html = `
+                        <b>Paciente:</b> ${data.pacienteNombre}<br>
+                        <b>Correo:</b> ${data.pacienteCorreo}<br>
+                        <b>Teléfono:</b> ${data.pacienteTelefono}<br>
+                        <b>Dirección:</b> ${data.pacienteDireccion}<br>
+                        <b>Nacimiento:</b> ${data.pacienteNacimiento?.substring(0, 10) || ""}<hr>
+                        <b>Examen:</b> ${data.examenNombre}<br>
+                        <b>Descripción:</b> ${data.examenDescripcion || ""}<br>
+                        <b>Indicaciones:</b> ${data.examenIndicaciones || ""}<hr>
+                        <form method="post" enctype="multipart/form-data" action="/Enfermero?handler=SubirResultado">
+                            <input type="hidden" name="citaId" value="${data.citaID}" />
+                            <div class="mb-2">
+                                <label>Adjuntar resultado:</label>
+                                <input type="file" name="archivo" class="form-control" required />
+                            </div>
+                            <button type="submit" class="btn btn-success btn-sm">Subir resultado</button>
+                            ${data.resultadoRutaArchivo ? `<div class="mt-2"><a href="${data.resultadoRutaArchivo}" target="_blank">Ver resultado actual</a></div>` : ""}
+                        </form>`;
+                    document.getElementById('detalleCitaContenido').innerHTML = html;
+                    var modal = new bootstrap.Modal(document.getElementById('modalDetalleCita'));
+                    modal.show();
+                });
+        }
+    </script>
+}

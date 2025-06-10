@@ -54,18 +54,18 @@ namespace Proyecto.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
+            await CargarDatosCalendario(DatosCita.ExamenID);
+
+            // Validación de fecha y hora válidas
             if (DatosCita.Fecha == DateTime.MinValue || DatosCita.Hora == TimeSpan.Zero)
             {
                 Mensaje = "Debe seleccionar una fecha y una hora válidas.";
-                await CargarDatosCalendario(DatosCita.ExamenID);
                 return Page();
             }
 
-            await CargarDatosCalendario(DatosCita.ExamenID);
-
             var userDoc = User.Claims.FirstOrDefault(c => c.Type == "Documento")?.Value;
             var paciente = await _context.Pacientes.Include(p => p.Usuario)
-                                .FirstOrDefaultAsync(p => p.Usuario.Documento == userDoc);
+                                    .FirstOrDefaultAsync(p => p.Usuario.Documento == userDoc);
             if (paciente == null)
                 return RedirectToPage("/Login");
 
@@ -74,10 +74,10 @@ namespace Proyecto.Pages
 
             var yaTieneCita = await _context.Citas
                 .AnyAsync(c => c.PacienteID == paciente.PacienteID &&
-                               c.ExamenID == DatosCita.ExamenID &&
-                               c.FechaHora >= limiteSemana &&
-                               c.FechaHora <= fechaHoraCita &&
-                               c.Estado == EstadoGeneral.Activo);
+                            c.ExamenID == DatosCita.ExamenID &&
+                            c.FechaHora >= limiteSemana &&
+                            c.FechaHora <= fechaHoraCita &&
+                            c.Estado == EstadoGeneral.Activo);
 
             if (yaTieneCita)
             {

@@ -24,8 +24,8 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWdlbmRhckNpdGEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+[C:/Users/User/Desktop/Programacion3/proyecto/Pages/Enfermero.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW5mZXJtZXJvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/User/Desktop/Programacion3/proyecto/Pages/Index.cshtml]
@@ -44,16 +44,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9nb3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/Nosotros.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTm9zb3Ryb3MuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/User/Desktop/Programacion3/proyecto/Pages/Perfil.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGVyZmlsLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/User/Desktop/Programacion3/proyecto/Pages/Registro.cshtml]

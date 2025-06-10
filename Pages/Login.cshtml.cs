@@ -85,7 +85,7 @@ namespace Proyecto.Pages
                 case "enfermero":
                     return RedirectToPage("/Enfermero");
                 case "administrador":
-                    return RedirectToPage("/Admin/Index");
+                    return RedirectToPage("/Admin");
                 default:
                     await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                     ErrorMessage = "Rol no reconocido";

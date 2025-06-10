@@ -4,9 +4,11 @@ using Proyecto.Data;
 using Proyecto.Model.ViewModel;
 using Proyecto.Model;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Proyecto.Pages.Admin
 {
+    [Authorize(Roles = "Administrador")]
     public class AdminModel : PageModel
     {
         private readonly ProyectoDbContext _context;

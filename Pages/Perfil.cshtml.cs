@@ -29,12 +29,25 @@ namespace Proyecto.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            // Usuario logueado
+            await CargarPerfil();
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            Mensaje = "OnPostAsync ejecutado";  // <- Debug
+
+            if (!ModelState.IsValid)
+            {
+                Mensaje = "Error de validación";
+                await CargarPerfil();
+                return Page();
+            }
+
             var userDoc = User.Claims.FirstOrDefault(c => c.Type == "Documento")?.Value;
             if (string.IsNullOrEmpty(userDoc))
                 return RedirectToPage("/Login");
 
-            // Busca el paciente con su usuario
             var paciente = await _context.Pacientes
                 .Include(p => p.Usuario)
                 .FirstOrDefaultAsync(p => p.Usuario.Documento == userDoc);
@@ -42,19 +55,56 @@ namespace Proyecto.Pages
             if (paciente == null)
                 return NotFound();
 
-            // Lógica para actualizar TI a CC si corresponde
-            var today = DateTime.Today;
-            var edad = today.Year - paciente.Nacimiento.Year;
-            if (paciente.Nacimiento.Date > today.AddYears(-edad)) edad--;
-
-            if (paciente.Usuario.TipoDocumento == "TI" && edad >= 18)
+            // Actualiza campos permitidos
+            paciente.Nombres = Perfil.Nombres;
+            paciente.Apellidos = Perfil.Apellidos;
+            paciente.Correo = Perfil.Correo;
+            paciente.Sexo = Perfil.Sexo switch
             {
-                paciente.Usuario.TipoDocumento = "CC";
+                "Masculino" => "M",
+                "Femenino" => "F",
+                "Otro" => "Otro",
+                _ => ""
+            };
+            paciente.Telefono = Perfil.Telefono;
+            paciente.Direccion = Perfil.Direccion;
+
+            _context.Entry(paciente).State = EntityState.Modified;
+
+            try
+            {
                 await _context.SaveChangesAsync();
-                Mensaje = "Su tipo de documento ha sido actualizado automáticamente a CC por mayoría de edad.";
+                Mensaje = "Información actualizada correctamente.";
+            }
+            catch (Exception ex)
+            {
+                Mensaje = "Error al guardar: " + ex.Message;
             }
 
-            // Busca la afiliación activa y la EPS
+            await CargarPerfil();
+            return Page();
+        }
+
+        // Método auxiliar para recargar el perfil del usuario autenticado
+        private async Task CargarPerfil()
+        {
+            var userDoc = User.Claims.FirstOrDefault(c => c.Type == "Documento")?.Value;
+            if (string.IsNullOrEmpty(userDoc))
+            {
+                Perfil = new PacientePerfilViewModel();
+                return;
+            }
+
+            var paciente = await _context.Pacientes
+                .Include(p => p.Usuario)
+                .FirstOrDefaultAsync(p => p.Usuario.Documento == userDoc);
+
+            if (paciente == null)
+            {
+                Perfil = new PacientePerfilViewModel();
+                return;
+            }
+
             var afiliacion = await _context.Afiliaciones
                 .Include(a => a.EPS)
                 .FirstOrDefaultAsync(a => a.Documento == paciente.Usuario.Documento && a.Estado == EstadoGeneral.Activo);
@@ -79,51 +129,6 @@ namespace Proyecto.Pages
                 Documento = paciente.Usuario.Documento,
                 NombreEPS = afiliacion?.EPS?.Nombre ?? "No afiliado"
             };
-
-            return Page();
-        }
-
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-                return Page();
-
-            // Solo el paciente autenticado puede editar su perfil
-            var userDoc = User.Claims.FirstOrDefault(c => c.Type == "Documento")?.Value;
-            if (string.IsNullOrEmpty(userDoc))
-                return RedirectToPage("/Login");
-
-            var paciente = await _context.Pacientes
-                .Include(p => p.Usuario)
-                .FirstOrDefaultAsync(p => p.PacienteID == Perfil.PacienteID);
-
-            if (paciente == null)
-                return NotFound();
-
-            if (paciente.Usuario.Documento != userDoc)
-            {
-                // Intento de modificar perfil de otro usuario
-                Mensaje = "No tienes permisos para modificar este perfil.";
-                return Page();
-            }
-
-            // Solo actualiza los campos permitidos
-            paciente.Nombres = Perfil.Nombres;
-            paciente.Apellidos = Perfil.Apellidos;
-            paciente.Correo = Perfil.Correo;
-            paciente.Sexo = Perfil.Sexo switch
-            {
-                "Masculino" => "M",
-                "Femenino" => "F",
-                "Otro" => "Otro",
-                _ => ""
-            };
-            paciente.Telefono = Perfil.Telefono;
-            paciente.Direccion = Perfil.Direccion;
-
-            await _context.SaveChangesAsync();
-            Mensaje = "Información actualizada correctamente.";
-            return RedirectToPage();
         }
     }
 }

@@ -37,6 +37,9 @@
                     }
                     <form method="post" autocomplete="off">
                         <input type="hidden" asp-for="Perfil.PacienteID" />
+                        <input type="hidden" asp-for="Perfil.TipoDocumento" />
+                        <input type="hidden" asp-for="Perfil.Documento" />
+                        <input type="hidden" asp-for="Perfil.NombreEPS" />
                         <div class="mb-3">
                             <label class="form-label">Tipo Documento</label>
                             <input class="form-control-plaintext border-bottom" value="@Model.Perfil.TipoDocumento" readonly />

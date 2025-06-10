@@ -28,7 +28,7 @@ namespace Proyecto.Model.ViewModel
         [Required]
         public string Direccion { get; set; }
 
-        // Solo lectura
+        // Solo lectura, NO deben ser [Required]
         public string TipoDocumento { get; set; }
         public string Documento { get; set; }
         public DateTime Nacimiento { get; set; }

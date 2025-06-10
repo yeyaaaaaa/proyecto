@@ -29,9 +29,15 @@ namespace Proyecto.Model
         [Required]
         public EstadoGeneral Estado { get; set; }
 
+        // NUEVAS LINEAS: Relación con Enfermero
+        [ForeignKey("Enfermero")]
+        public int? EnfermeroID { get; set; } // Puede ser null si la cita aún no está asignada
+
         public Paciente Paciente { get; set; }
         public Examen Examen { get; set; }
         public EstadoCita EstadoCita { get; set; }
+        public Enfermero Enfermero { get; set; } // Navegación a enfermero
+
         public ICollection<Reprogramacion> Reprogramaciones { get; set; }
         public Resultado Resultado { get; set; }
         public ICollection<HistorialCita> HistorialCitas { get; set; }

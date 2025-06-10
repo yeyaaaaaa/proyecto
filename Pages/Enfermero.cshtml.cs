@@ -39,13 +39,15 @@ namespace Proyecto.Pages
             var primerDiaSemana = hoy.AddDays(-(int)hoy.DayOfWeek);
             var diasSemana = Enumerable.Range(0, 7).Select(i => primerDiaSemana.AddDays(i)).ToList();
 
+            // FILTRAR SOLO CITAS DEL ENFERMERO LOGUEADO (con EnfermeroID)
             var citasSemana = await _context.Citas
                 .Include(c => c.Paciente)
                 .Include(c => c.Examen)
                 .Include(c => c.Resultado)
                 .Where(c => c.FechaHora.Date >= diasSemana.First()
                             && c.FechaHora.Date <= diasSemana.Last()
-                            && c.Estado == EstadoGeneral.Activo) // SOLO ACTIVAS
+                            && c.Estado == EstadoGeneral.Activo
+                            && c.EnfermeroID == enfermero.EnfermeroID)
                 .OrderBy(c => c.FechaHora)
                 .ToListAsync();
 
@@ -110,10 +112,16 @@ namespace Proyecto.Pages
         {
             if (archivo == null || archivo.Length == 0) return BadRequest();
 
+            // Valida extensión
+            var extension = Path.GetExtension(archivo.FileName).ToLowerInvariant();
+            if (extension != ".pdf")
+                return BadRequest("Solo se permiten archivos PDF.");
+
             var cita = await _context.Citas.Include(c => c.Resultado).FirstOrDefaultAsync(c => c.CitaID == citaId);
             if (cita == null) return NotFound();
 
-            var nombreArchivo = Path.GetFileName(archivo.FileName);
+            // Nombre único para evitar colisiones
+            var nombreArchivo = $"{Guid.NewGuid()}{extension}";
             var rutaCarpeta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Resultados");
             if (!Directory.Exists(rutaCarpeta))
                 Directory.CreateDirectory(rutaCarpeta);
@@ -144,7 +152,6 @@ namespace Proyecto.Pages
             }
 
             await _context.SaveChangesAsync();
-            // Puedes redirigir a la misma página o devolver un estado para AJAX
             return RedirectToPage();
         }
     }

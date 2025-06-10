@@ -124,19 +124,32 @@ namespace Proyecto.Pages
                 return RedirectToPage();
             }
 
-            var cita = await _context.Citas.Include(c => c.Resultado).FirstOrDefaultAsync(c => c.CitaID == citaId);
+            var cita = await _context.Citas
+                .Include(c => c.Paciente)
+                .Include(c => c.Resultado)
+                .FirstOrDefaultAsync(c => c.CitaID == citaId);
+
             if (cita == null)
             {
                 TempData["MensajeError"] = "No se encontró la cita.";
                 return RedirectToPage();
             }
 
+            // Obtener documento del paciente
+            var documentoPaciente = cita.Paciente?.Usuario?.Documento;
+            if (string.IsNullOrEmpty(documentoPaciente))
+            {
+                TempData["MensajeError"] = "No se encontró el documento del paciente.";
+                return RedirectToPage();
+            }
+
+            // Crear subcarpeta por documento
             var nombreArchivo = $"{Guid.NewGuid()}{extension}";
-            var rutaCarpeta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Resultados");
+            var rutaCarpeta = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Resultados", documentoPaciente);
             if (!Directory.Exists(rutaCarpeta))
                 Directory.CreateDirectory(rutaCarpeta);
             var rutaFisica = Path.Combine(rutaCarpeta, nombreArchivo);
-            var rutaWeb = "/Resultados/" + nombreArchivo;
+            var rutaWeb = $"/Resultados/{documentoPaciente}/{nombreArchivo}";
 
             using (var stream = new FileStream(rutaFisica, FileMode.Create))
             {

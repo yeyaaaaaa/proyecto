@@ -2,12 +2,24 @@
 @model Proyecto.Pages.IndexPacienteModel
 @{
     ViewData["Title"] = "Panel de Paciente";
+    var mensajeExito = TempData["MensajeExito"] as string;
+    var mensajeError = TempData["MensajeError"] as string;
 }
 
 <div class="container mt-5">
     <h2 class="text-center mb-5">
         Bienvenido, @Model.NombrePaciente
     </h2>
+
+    <!-- Mensajes de éxito o error -->
+    @if (!string.IsNullOrEmpty(mensajeExito))
+    {
+        <div class="alert alert-success" role="alert">@mensajeExito</div>
+    }
+    @if (!string.IsNullOrEmpty(mensajeError))
+    {
+        <div class="alert alert-danger" role="alert">@mensajeError</div>
+    }
 
     <!-- Tabla de citas agendadas -->
     <div class="mb-5">
@@ -20,6 +32,7 @@
                         <th>Examen</th>
                         <th>Fecha</th>
                         <th>Hora</th>
+                        <th>Resultado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -30,6 +43,16 @@
                         <td>@cita.Examen?.Nombre</td>
                         <td>@cita.FechaHora.ToString("yyyy-MM-dd")</td>
                         <td>@cita.FechaHora.ToString("HH:mm")</td>
+                        <td>
+                            @if (cita.Resultado != null && !string.IsNullOrEmpty(cita.Resultado.ArchivoPDF))
+                            {
+                                <button class="btn btn-success btn-sm" onclick="mostrarResultado(@cita.CitaID)">Ver resultado</button>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Sin resultado</span>
+                            }
+                        </td>
                         <td>
                             <form method="post" asp-page-handler="CancelarCita" asp-route-citaId="@cita.CitaID" onsubmit="return confirm('¿Seguro que desea cancelar esta cita?');">
                                 <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
@@ -44,6 +67,26 @@
         {
             <div class="alert alert-info">No tienes citas agendadas próximamente.</div>
         }
+    </div>
+
+    <!-- Modal para detalle del resultado PDF -->
+    <div class="modal fade" id="resultadoModal" tabindex="-1" role="dialog" aria-labelledby="resultadoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Resultado del Examen</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar" onclick="cerrarResultado()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="resultadoBody">
+                    <div class="text-center">
+                        <span class="spinner-border"></span>
+                        <span>Cargando...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row justify-content-center g-4 mb-5">
@@ -63,7 +106,7 @@
                     <i class="bi bi-file-earmark-medical display-4 text-success mb-2"></i>
                     <h5 class="card-title mb-3">Resultados</h5>
                     <p class="card-text">Consulta los resultados de tus exámenes y estudios.</p>
-                    <a href="/Resultados" class="btn btn-success btn-lg w-100">Ver Resultados</a>
+                    <a href="#tablaResultados" class="btn btn-success btn-lg w-100" onclick="scrollToResultados()">Ver Resultados</a>
                 </div>
             </div>
         </div>
@@ -84,3 +127,37 @@
         </a>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS necesario para el modal -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function mostrarResultado(citaId) {
+            $('#resultadoModal').modal('show');
+            $("#resultadoBody").html('<div class="text-center"><span class="spinner-border"></span> <span>Cargando...</span></div>');
+            $.get('@Url.Page("IndexPaciente", "DetalleResultado")', { citaId: citaId }, function (data) {
+                var html = '';
+                html += '<b>Examen:</b> ' + (data.examenNombre || '') + '<br />';
+                html += '<b>Fecha:</b> ' + (data.fechaHora ? new Date(data.fechaHora).toLocaleString() : '') + '<br />';
+                html += '<b>Estado:</b> ' + (data.estado || '') + '<br />';
+                if (data.resultadoArchivo) {
+                    html += '<b>Archivo:</b> <a href="' + data.resultadoArchivo + '" target="_blank" class="btn btn-primary btn-sm">Ver PDF</a><br />';
+                } else {
+                    html += '<span class="text-muted">No hay archivo PDF subido aún.</span>';
+                }
+                $("#resultadoBody").html(html);
+            });
+        }
+        function cerrarResultado() {
+            $('#resultadoModal').modal('hide');
+            $("#resultadoBody").html("");
+        }
+        function scrollToResultados() {
+            var tabla = document.querySelector("table.table.table-striped");
+            if (tabla) {
+                tabla.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+    </script>
+}

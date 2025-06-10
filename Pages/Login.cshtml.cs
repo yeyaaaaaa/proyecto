@@ -83,7 +83,7 @@ namespace Proyecto.Pages
                 case "paciente":
                     return RedirectToPage("/IndexPaciente");
                 case "enfermero":
-                    return RedirectToPage("/Enfermero/Index");
+                    return RedirectToPage("/Enfermero");
                 case "administrador":
                     return RedirectToPage("/Admin/Index");
                 default:

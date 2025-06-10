@@ -28,7 +28,7 @@ namespace Proyecto.Pages
         }
 
         [BindProperty]
-        public AgendarCitaViewModel DatosCita { get; set; }
+        public AgendarCitaViewModel DatosCita { get; set; } = new AgendarCitaViewModel();
 
         public string Mensaje { get; set; }
 
@@ -57,7 +57,7 @@ namespace Proyecto.Pages
             await CargarDatosCalendario(DatosCita.ExamenID);
 
             // Validación de fecha y hora válidas
-            if (DatosCita.Fecha == DateTime.MinValue || DatosCita.Hora == TimeSpan.Zero)
+            if (DatosCita.Fecha == DateTime.MinValue || DatosCita.Hora == TimeSpan.Zero || DatosCita.ExamenID == 0)
             {
                 Mensaje = "Debe seleccionar una fecha y una hora válidas.";
                 return Page();
@@ -114,7 +114,10 @@ namespace Proyecto.Pages
 
         private async Task CargarDatosCalendario(int? examenId = null)
         {
-            DatosCita = new AgendarCitaViewModel();
+            // Solo inicializa si está en null
+            if (DatosCita == null)
+                DatosCita = new AgendarCitaViewModel();
+
             DatosCita.ExamenesDisponibles = await _context.Examenes
                 .Where(e => e.Estado == EstadoGeneral.Activo)
                 .ToListAsync();

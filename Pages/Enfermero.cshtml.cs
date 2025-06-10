@@ -84,7 +84,7 @@ namespace Proyecto.Pages
             {
                 CitaID = cita.CitaID,
                 FechaHora = cita.FechaHora,
-                Estado = cita.EstadoCita?.Nombre ?? cita.Estado.ToString(),
+                Estado = cita.EstadoCita?.Descripcion ?? cita.Estado.ToString(),
                 PacienteID = cita.Paciente.PacienteID,
                 PacienteNombre = $"{cita.Paciente.Nombres} {cita.Paciente.Apellidos}",
                 PacienteCorreo = cita.Paciente.Correo,
@@ -93,8 +93,8 @@ namespace Proyecto.Pages
                 PacienteNacimiento = cita.Paciente.Nacimiento,
                 ExamenNombre = cita.Examen.Nombre,
                 ExamenDescripcion = cita.Examen.Descripcion,
-                ExamenIndicaciones = cita.Examen.Indicaciones,
-                ResultadoRutaArchivo = cita.Resultado?.RutaArchivo
+                ExamenIndicaciones = null, // No existe en modelo, ponlo como null o ""
+                ResultadoRutaArchivo = cita.Resultado?.ArchivoPDF // ArchivoPDF es el nombre de la propiedad para el archivo subido
             };
 
             return new JsonResult(detalle);
@@ -126,17 +126,17 @@ namespace Proyecto.Pages
                 cita.Resultado = new Resultado
                 {
                     CitaID = cita.CitaID,
-                    NombreArchivo = nombreArchivo,
-                    RutaArchivo = rutaWeb,
-                    FechaSubida = DateTime.Now
+                    ArchivoPDF = rutaWeb,
+                    FechaSubida = DateTime.Now,
+                    Estado = EstadoGeneral.Activo
                 };
                 _context.Resultados.Add(cita.Resultado);
             }
             else
             {
-                cita.Resultado.NombreArchivo = nombreArchivo;
-                cita.Resultado.RutaArchivo = rutaWeb;
+                cita.Resultado.ArchivoPDF = rutaWeb;
                 cita.Resultado.FechaSubida = DateTime.Now;
+                cita.Resultado.Estado = EstadoGeneral.Activo;
             }
 
             await _context.SaveChangesAsync();

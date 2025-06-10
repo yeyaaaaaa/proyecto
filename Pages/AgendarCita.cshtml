@@ -35,7 +35,7 @@
                     <form method="post" id="formAgendar">
                         <div class="mb-3">
                             <label class="form-label">Examen</label>
-                            <select asp-for="DatosCita.ExamenID" class="form-select" id="selectExamen">
+                            <select asp-for="DatosCita.ExamenID" class="form-select" id="selectExamen" required>
                                 <option value="">Seleccione...</option>
                                 @foreach (var ex in Model.DatosCita.ExamenesDisponibles)
                                 {
@@ -48,16 +48,17 @@
                             <input type="date" asp-for="DatosCita.Fecha" class="form-control" id="inputFecha"
                                 min="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")"
                                 max="@DateTime.Today.AddMonths(1).ToString("yyyy-MM-dd")"
+                                required
                             />
                             <div id="infoDias" class="small mt-1"></div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Seleccione hora</label>
-                            <select asp-for="DatosCita.Hora" class="form-select" id="selectHora">
+                            <select asp-for="DatosCita.Hora" class="form-select" id="selectHora" required>
                                 <option value="">Seleccione...</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-success btn-lg w-100">Agendar</button>
+                        <button type="submit" class="btn btn-success btn-lg w-100" id="btnAgendar" disabled>Agendar</button>
                     </form>
                     <div class="mt-4">
                         <div class="alert alert-warning mb-3">
@@ -65,7 +66,7 @@
                         </div>
                         <div class="text-center">
                             <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover " asp-page="/IndexPaciente" role="button">Regresar</a>
-                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -76,7 +77,6 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        // Cargar días llenos y marcar en rojo
         const diasLlenos = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DatosCita.DiasLlenos.Select(d=>d.ToString("yyyy-MM-dd"))));
         const diasDisponibles = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.DatosCita.DiasDisponibles.Select(d=>d.ToString("yyyy-MM-dd"))));
 
@@ -84,36 +84,57 @@
             const fecha = this.value;
             if (diasLlenos.includes(fecha)) {
                 document.getElementById('infoDias').innerHTML = "<span class='text-danger'>Este día está lleno. Elija otro día.</span>";
-                document.getElementById('selectHora').innerHTML = "<option>Seleccione...</option>";
+                document.getElementById('selectHora').innerHTML = "<option value=''>Seleccione...</option>";
             } else if (!diasDisponibles.includes(fecha)) {
                 document.getElementById('infoDias').innerHTML = "<span class='text-warning'>Día no disponible.</span>";
-                document.getElementById('selectHora').innerHTML = "<option>Seleccione...</option>";
+                document.getElementById('selectHora').innerHTML = "<option value=''>Seleccione...</option>";
             } else {
                 document.getElementById('infoDias').innerHTML = "<span class='text-success'>Día disponible.</span>";
                 cargarHorasDisponibles();
             }
+            validarCampos();
         });
 
         function cargarHorasDisponibles() {
             const fecha = document.getElementById('inputFecha').value;
             const examenId = document.getElementById('selectExamen').value;
-            if (!fecha || !examenId) return;
-            fetch(`@Url.Page("AgendarCita", "HorasDisponibles")&fecha=${fecha}&examenId=${examenId}`)
+            if (!fecha || !examenId) {
+                document.getElementById('selectHora').innerHTML = "<option value=''>Seleccione...</option>";
+                validarCampos();
+                return;
+            }
+            fetch(`/AgendarCita?handler=HorasDisponibles&fecha=${fecha}&examenId=${examenId}`)
                 .then(resp => resp.json())
                 .then(horas => {
                     let options = "<option value=''>Seleccione...</option>";
-                    horas.forEach(hora => {
-                        // hora: "HH:mm:ss"
-                        options += `<option value="${hora}">${hora.substring(0,5)}</option>`;
-                    });
+                    if(horas.length === 0) {
+                        options += "<option value=''>No hay horas disponibles</option>";
+                    } else {
+                        horas.forEach(hora => {
+                            options += `<option value="${hora}">${hora.substring(0,5)}</option>`;
+                        });
+                    }
                     document.getElementById('selectHora').innerHTML = options;
+                    validarCampos();
                 });
         }
 
         document.getElementById('selectExamen').addEventListener('change', function () {
             document.getElementById('inputFecha').value = "";
             document.getElementById('infoDias').innerHTML = "";
-            document.getElementById('selectHora').innerHTML = "<option>Seleccione...</option>";
+            document.getElementById('selectHora').innerHTML = "<option value=''>Seleccione...</option>";
+            validarCampos();
         });
+
+        document.getElementById('selectHora').addEventListener('change', validarCampos);
+
+        function validarCampos() {
+            const fecha = document.getElementById('inputFecha').value;
+            const hora = document.getElementById('selectHora').value;
+            const examen = document.getElementById('selectExamen').value;
+            document.getElementById('btnAgendar').disabled = !(fecha && hora && examen);
+        }
+        // Inicializa el estado del botón al cargar la página
+        validarCampos();
     </script>
 }

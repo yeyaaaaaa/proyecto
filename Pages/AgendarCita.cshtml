@@ -27,6 +27,12 @@
                 <div class="card-header display-2 fw-normal text-center">
                     <h3 class="mb-0"><i class="bi bi-calendar-plus me-2"></i>Agendar Cita</h3>
                 </div>
+                @if (!string.IsNullOrEmpty(Model.MensajeTemp))
+                {
+                    <div class="alert alert-success">
+                        @Model.MensajeTemp
+                    </div>
+                }
                 <div class="card-body">
                     @if (!string.IsNullOrEmpty(Model.Mensaje))
                     {

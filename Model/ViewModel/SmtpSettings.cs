@@ -8,6 +8,5 @@ namespace Proyecto.Model.ViewModel
         public string SenderEmail { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public bool EnableSsl { get; set; }
     }
 }

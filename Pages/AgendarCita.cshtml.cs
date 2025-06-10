@@ -20,6 +20,8 @@ namespace Proyecto.Pages
         private static readonly TimeSpan HoraInicio = new(6, 0, 0);
         private static readonly TimeSpan HoraFin = new(12, 0, 0);
         private static readonly TimeSpan DuracionCita = new(0, 30, 0);
+        [TempData]
+        public string MensajeTemp { get; set; }
 
         public AgendarCitaModel(ProyectoDbContext context, EmailService emailService)
         {
@@ -108,7 +110,7 @@ namespace Proyecto.Pages
 
             await EnviarCorreoConfirmacion(paciente, cita);
 
-            Mensaje = "¡Cita agendada exitosamente! Revise su correo para los detalles y recomendaciones.";
+            MensajeTemp = "¡Cita agendada exitosamente! Revise su correo para los detalles y recomendaciones.";
             return RedirectToPage();
         }
 

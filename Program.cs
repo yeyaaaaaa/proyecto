@@ -2,11 +2,19 @@ using Proyecto.Data;
 using Proyecto.Model.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configuración de SmtpSettings (asegúrate de tener el bloque SmtpSettings en appsettings.json)
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
-builder.Services.AddTransient<Proyecto.Services.EmailService>();
+
+// Registrar EmailService pasando la configuración concreta de SmtpSettings
+builder.Services.AddTransient<Proyecto.Services.EmailService>(sp =>
+{
+    var smtpSettings = sp.GetRequiredService<IOptions<SmtpSettings>>().Value;
+    return new Proyecto.Services.EmailService(smtpSettings);
+});
 
 // Parte de la conexion a la base de datos.
 builder.Services.AddDbContext<ProyectoDbContext>(options =>

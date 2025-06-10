@@ -27,6 +27,7 @@ namespace Proyecto.Pages.Admin
             AdminVM.EPSs = _context.EPSs.Where(e => e.Estado == EstadoGeneral.Activo).ToList();
         }
 
+        // Corregido: Solo crea la afiliación, no usuario ni paciente
         public IActionResult OnPostRegistrarPaciente()
         {
             if (string.IsNullOrWhiteSpace(AdminVM.PacienteTipoDocumento) || string.IsNullOrWhiteSpace(AdminVM.PacienteDocumento) || AdminVM.PacienteEPSID == null)
@@ -37,49 +38,23 @@ namespace Proyecto.Pages.Admin
                 return Page();
             }
 
-            // Verifica si ya existe un paciente con ese documento
-            bool existe = _context.Pacientes.Any(p =>
-                p.Usuario.TipoDocumento == AdminVM.PacienteTipoDocumento &&
-                p.Usuario.Documento == AdminVM.PacienteDocumento);
+            // Verifica si ya existe una afiliación con ese documento y EPS activa
+            bool existeAfiliacion = _context.Afiliaciones.Any(a =>
+                a.TipoDocumento == AdminVM.PacienteTipoDocumento &&
+                a.Documento == AdminVM.PacienteDocumento &&
+                a.EPSID == AdminVM.PacienteEPSID.Value &&
+                a.Estado == EstadoGeneral.Activo
+            );
 
-            if (existe)
+            if (existeAfiliacion)
             {
-                ModelState.AddModelError(string.Empty, "Ya existe un paciente con ese documento.");
+                ModelState.AddModelError(string.Empty, "Ya existe una afiliación activa para ese documento y EPS.");
                 CargarListados();
                 AdminVM.EPSs = _context.EPSs.Where(e => e.Estado == EstadoGeneral.Activo).ToList();
                 return Page();
             }
 
-            // Crea el usuario mínimo para el paciente (sin contraseña aún)
-            var usuario = new Usuario
-            {
-                TipoDocumento = AdminVM.PacienteTipoDocumento,
-                Documento = AdminVM.PacienteDocumento,
-                ContraseñaHash = "", // El usuario la creará luego
-                Salt = "",
-                RolID = _context.Roles.FirstOrDefault(r => r.Nombre == "Paciente")?.RolID ?? 3,
-                Estado = EstadoGeneral.Inactivo // Inactivo hasta que el usuario se registre
-            };
-            _context.Usuarios.Add(usuario);
-            _context.SaveChanges();
-
-            // Crea el paciente
-            var paciente = new Paciente
-            {
-                Nombres = "",
-                Apellidos = "",
-                Correo = "",
-                Sexo = "",
-                Telefono = "",
-                Direccion = "",
-                Nacimiento = new System.DateTime(1900, 1, 1),
-                UsuarioFK = usuario.UsuarioID,
-                Estado = EstadoGeneral.Inactivo
-            };
-            _context.Pacientes.Add(paciente);
-            _context.SaveChanges();
-
-            // Crea la afiliación a la EPS
+            // Solo crea la afiliación
             var afiliacion = new Afiliacion
             {
                 TipoDocumento = AdminVM.PacienteTipoDocumento,
@@ -90,7 +65,7 @@ namespace Proyecto.Pages.Admin
             _context.Afiliaciones.Add(afiliacion);
             _context.SaveChanges();
 
-            TempData["Mensaje"] = "Paciente añadido correctamente. Ahora puede registrarse como usuario.";
+            TempData["Mensaje"] = "Afiliación creada correctamente. El usuario puede ahora registrarse.";
             return RedirectToPage();
         }
 

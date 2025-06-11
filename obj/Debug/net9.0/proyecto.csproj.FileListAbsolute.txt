@@ -218,6 +218,8 @@ C:\Users\IK\proyecto\bin\Debug\net9.0\proyecto.deps.json
 C:\Users\IK\proyecto\bin\Debug\net9.0\proyecto.runtimeconfig.json
 C:\Users\IK\proyecto\bin\Debug\net9.0\proyecto.dll
 C:\Users\IK\proyecto\bin\Debug\net9.0\proyecto.pdb
+C:\Users\IK\proyecto\bin\Debug\net9.0\en\proyecto.resources.dll
+C:\Users\IK\proyecto\bin\Debug\net9.0\es\proyecto.resources.dll
 C:\Users\IK\proyecto\bin\Debug\net9.0\Azure.Core.dll
 C:\Users\IK\proyecto\bin\Debug\net9.0\Azure.Identity.dll
 C:\Users\IK\proyecto\bin\Debug\net9.0\BouncyCastle.Cryptography.dll
@@ -330,6 +332,9 @@ C:\Users\IK\proyecto\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Runtime.Cac
 C:\Users\IK\proyecto\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\IK\proyecto\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\IK\proyecto\obj\Debug\net9.0\proyecto.csproj.AssemblyReference.cache
+C:\Users\IK\proyecto\obj\Debug\net9.0\proyecto.Resources.Paginas.Index.en.resources
+C:\Users\IK\proyecto\obj\Debug\net9.0\proyecto.Resources.Paginas.Index.es.resources
+C:\Users\IK\proyecto\obj\Debug\net9.0\proyecto.csproj.GenerateResource.cache
 C:\Users\IK\proyecto\obj\Debug\net9.0\proyecto.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\IK\proyecto\obj\Debug\net9.0\proyecto.AssemblyInfoInputs.cache
 C:\Users\IK\proyecto\obj\Debug\net9.0\proyecto.AssemblyInfo.cs
@@ -338,9 +343,12 @@ C:\Users\IK\proyecto\obj\Debug\net9.0\proyecto.MvcApplicationPartsAssemblyInfo.c
 C:\Users\IK\proyecto\obj\Debug\net9.0\proyecto.RazorAssemblyInfo.cache
 C:\Users\IK\proyecto\obj\Debug\net9.0\proyecto.RazorAssemblyInfo.cs
 C:\Users\IK\proyecto\obj\Debug\net9.0\proyecto.sourcelink.json
+C:\Users\IK\proyecto\obj\Debug\net9.0\en\proyecto.resources.dll
+C:\Users\IK\proyecto\obj\Debug\net9.0\es\proyecto.resources.dll
 C:\Users\IK\proyecto\obj\Debug\net9.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\IK\proyecto\obj\Debug\net9.0\scopedcss\bundle\proyecto.styles.css
 C:\Users\IK\proyecto\obj\Debug\net9.0\scopedcss\projectbundle\proyecto.bundle.scp.css
+C:\Users\IK\proyecto\obj\Debug\net9.0\compressed\rbp9s8qmud-rets7v7xfh.gz
 C:\Users\IK\proyecto\obj\Debug\net9.0\compressed\5brcu8utou-61n19gt1b8.gz
 C:\Users\IK\proyecto\obj\Debug\net9.0\compressed\l8yljyqe3p-xtxxf3hu2r.gz
 C:\Users\IK\proyecto\obj\Debug\net9.0\compressed\6z0ikszbtk-t1cqhe9u97.gz
@@ -414,4 +422,4 @@ C:\Users\IK\proyecto\obj\Debug\net9.0\refint\proyecto.dll
 C:\Users\IK\proyecto\obj\Debug\net9.0\proyecto.pdb
 C:\Users\IK\proyecto\obj\Debug\net9.0\proyecto.genruntimeconfig.cache
 C:\Users\IK\proyecto\obj\Debug\net9.0\ref\proyecto.dll
-C:\Users\IK\proyecto\obj\Debug\net9.0\compressed\rbp9s8qmud-rets7v7xfh.gz
+C:\Users\IK\proyecto\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

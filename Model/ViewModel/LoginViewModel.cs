@@ -11,6 +11,7 @@ namespace Proyecto.Model.ViewModel
         [Required(ErrorMessage = "La contraseña es obligatoria")]
         [StringLength(100, MinimumLength = 8, ErrorMessage = "La contraseña debe tener al menos 8 caracteres")]
         [DataType(DataType.Password)]
+        [Display(Name = "Contraseña")]
         public string Password { get; set; }
     }
 }

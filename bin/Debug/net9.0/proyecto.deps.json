@@ -17,6 +17,14 @@
         },
         "runtime": {
           "proyecto.dll": {}
+        },
+        "resources": {
+          "en/proyecto.resources.dll": {
+            "locale": "en"
+          },
+          "es/proyecto.resources.dll": {
+            "locale": "es"
+          }
         }
       },
       "Azure.Core/1.38.0": {

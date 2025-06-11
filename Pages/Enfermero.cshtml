@@ -17,7 +17,8 @@
         background-attachment: fixed;
         height: 100vh;
     }
-    .fondo-transparente{
+
+    .fondo-transparente {
         background-color: rgba(255, 255, 255, 0.3);
         border-radius: 1rem;
         padding: 1rem;
@@ -67,14 +68,16 @@
                                         <li>
                                             <strong>@cita.Hora.ToString(@"hh\:mm")</strong> - @cita.PacienteNombre <br />
                                             <span>@cita.ExamenNombre</span>
-                                            <button class="btn btn-link btn-sm p-0" onclick="mostrarDetalle(@cita.CitaID)">Ver
-                                                detalle</button>
-                                            <!-- Formulario para subir archivo PDF -->
+                                            <button class="btn btn-link btn-sm p-0" onclick="mostrarDetalle(@cita.CitaID)">
+                                                Ver
+                                                detalle
+                                            </button>
+                                            @* <!-- Formulario para subir archivo PDF --> *@
                                             <form asp-page-handler="SubirResultado" method="post" enctype="multipart/form-data"
-                                                style="display:inline;">
+                                                  style="display:inline;">
                                                 <input type="hidden" name="citaId" value="@cita.CitaID" />
                                                 <input type="file" name="archivo" accept="application/pdf" style="display:inline;"
-                                                    required />
+                                                       required />
                                                 <button type="submit" class="btn btn-primary btn-sm">Subir PDF</button>
                                             </form>
                                         </li>
@@ -95,13 +98,13 @@
 
     <!-- Modal para detalle de cita -->
     <div class="modal fade" id="detalleCitaModal" tabindex="-1" role="dialog" aria-labelledby="detalleCitaLabel"
-        aria-hidden="true">
+         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content fondo-transparente">
                 <div class="modal-header">
                     <h5 class="modal-title">Detalle de la cita</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"
-                        onclick="cerrarDetalle()">
+                            onclick="cerrarDetalle()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -116,6 +119,8 @@
         </div>
     </div>
 </div>
+
+<br>
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

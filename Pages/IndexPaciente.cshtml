@@ -11,6 +11,12 @@
         Bienvenido, @Model.NombrePaciente
     </h2>
 
+    <div class="d-flex justify-content-end mb-3">
+        <a href="/Logout" class="btn btn-outline-danger">
+            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+        </a>
+    </div>
+
     <!-- Mensajes de éxito o error -->
     @if (!string.IsNullOrEmpty(mensajeExito))
     {
@@ -37,29 +43,31 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach (var cita in Model.Citas)
-                {
-                    <tr>
-                        <td>@cita.Examen?.Nombre</td>
-                        <td>@cita.FechaHora.ToString("yyyy-MM-dd")</td>
-                        <td>@cita.FechaHora.ToString("HH:mm")</td>
-                        <td>
-                            @if (cita.Resultado != null && !string.IsNullOrEmpty(cita.Resultado.ArchivoPDF))
-                            {
-                                <button class="btn btn-success btn-sm" onclick="mostrarResultado(@cita.CitaID)">Ver resultado</button>
-                            }
-                            else
-                            {
-                                <span class="text-muted">Sin resultado</span>
-                            }
-                        </td>
-                        <td>
-                            <form method="post" asp-page-handler="CancelarCita" asp-route-citaId="@cita.CitaID" onsubmit="return confirm('¿Seguro que desea cancelar esta cita?');">
-                                <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
+                    @foreach (var cita in Model.Citas)
+                    {
+                        <tr>
+                            <td>@cita.Examen?.Nombre</td>
+                            <td>@cita.FechaHora.ToString("yyyy-MM-dd")</td>
+                            <td>@cita.FechaHora.ToString("HH:mm")</td>
+                            <td>
+                                @if (cita.Resultado != null && !string.IsNullOrEmpty(cita.Resultado.ArchivoPDF))
+                                {
+                                    <button class="btn btn-success btn-sm" onclick="mostrarResultado(@cita.CitaID)">Ver
+                                        resultado</button>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Sin resultado</span>
+                                }
+                            </td>
+                            <td>
+                                <form method="post" asp-page-handler="CancelarCita" asp-route-citaId="@cita.CitaID"
+                                    onsubmit="return confirm('¿Seguro que desea cancelar esta cita?');">
+                                    <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         }
@@ -70,12 +78,14 @@
     </div>
 
     <!-- Modal para detalle del resultado PDF -->
-    <div class="modal fade" id="resultadoModal" tabindex="-1" role="dialog" aria-labelledby="resultadoLabel" aria-hidden="true">
+    <div class="modal fade" id="resultadoModal" tabindex="-1" role="dialog" aria-labelledby="resultadoLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Resultado del Examen</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar" onclick="cerrarResultado()">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"
+                        onclick="cerrarResultado()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -110,11 +120,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="d-flex justify-content-end mb-3">
-        <a href="/Logout" class="btn btn-outline-danger">
-            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
-        </a>
     </div>
 </div>
 

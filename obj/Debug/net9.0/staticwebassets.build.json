@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "+hU50TtTEX7n7nhDo9nERS5QnCSZTXNBvIMObyg8prI=",
+  "Hash": "d13YlGa1QrCze03YiuJ6Qu11sfcVNv1cTnwZpKKI+2A=",
   "Source": "proyecto",
   "BasePath": "_content/proyecto",
   "Mode": "Default",
@@ -2871,6 +2871,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Identity": "C:\\Users\\User\\Desktop\\Programacion3\\proyecto\\wwwroot\\Resultados\\dcff9a20-3a9e-41ea-af74-a349c3099106.pdf",
+      "SourceId": "proyecto",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\User\\Desktop\\Programacion3\\proyecto\\wwwroot\\",
+      "BasePath": "_content/proyecto",
+      "RelativePath": "Resultados/dcff9a20-3a9e-41ea-af74-a349c3099106#[.{fingerprint}]?.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "irc6wc3dh0",
+      "Integrity": "4jmQ+4zLOym50zI7f2+0/I8RKAXkm7RopcRQkJonHR0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Resultados\\dcff9a20-3a9e-41ea-af74-a349c3099106.pdf"
     }
   ],
   "Endpoints": [
@@ -22599,6 +22620,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-PDxXde9/WrHEKn18T7jt4Fgv1S6WabaxikLJPDV5QvY="
+        }
+      ]
+    },
+    {
+      "Route": "Resultados/dcff9a20-3a9e-41ea-af74-a349c3099106.irc6wc3dh0.pdf",
+      "AssetFile": "C:\\Users\\User\\Desktop\\Programacion3\\proyecto\\wwwroot\\Resultados\\dcff9a20-3a9e-41ea-af74-a349c3099106.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "503749"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4jmQ+4zLOym50zI7f2+0/I8RKAXkm7RopcRQkJonHR0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 10 Jun 2025 11:10:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "irc6wc3dh0"
+        },
+        {
+          "Name": "label",
+          "Value": "Resultados/dcff9a20-3a9e-41ea-af74-a349c3099106.pdf"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-4jmQ+4zLOym50zI7f2+0/I8RKAXkm7RopcRQkJonHR0="
+        }
+      ]
+    },
+    {
+      "Route": "Resultados/dcff9a20-3a9e-41ea-af74-a349c3099106.pdf",
+      "AssetFile": "C:\\Users\\User\\Desktop\\Programacion3\\proyecto\\wwwroot\\Resultados\\dcff9a20-3a9e-41ea-af74-a349c3099106.pdf",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "503749"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/pdf"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4jmQ+4zLOym50zI7f2+0/I8RKAXkm7RopcRQkJonHR0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 10 Jun 2025 11:10:12 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-4jmQ+4zLOym50zI7f2+0/I8RKAXkm7RopcRQkJonHR0="
         }
       ]
     }

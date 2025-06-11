@@ -130,7 +130,6 @@ C:\Users\User\Desktop\Programacion3\proyecto\bin\Debug\net9.0\runtimes\win\lib\n
 C:\Users\User\Desktop\Programacion3\proyecto\obj\Debug\net9.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\User\Desktop\Programacion3\proyecto\obj\Debug\net9.0\scopedcss\bundle\proyecto.styles.css
 C:\Users\User\Desktop\Programacion3\proyecto\obj\Debug\net9.0\scopedcss\projectbundle\proyecto.bundle.scp.css
-C:\Users\User\Desktop\Programacion3\proyecto\obj\Debug\net9.0\compressed\rbp9s8qmud-epte3in74o.gz
 C:\Users\User\Desktop\Programacion3\proyecto\obj\Debug\net9.0\compressed\5brcu8utou-61n19gt1b8.gz
 C:\Users\User\Desktop\Programacion3\proyecto\obj\Debug\net9.0\compressed\l8yljyqe3p-xtxxf3hu2r.gz
 C:\Users\User\Desktop\Programacion3\proyecto\obj\Debug\net9.0\compressed\6z0ikszbtk-bqjiyaj88i.gz
@@ -415,3 +414,4 @@ C:\Users\IK\proyecto\obj\Debug\net9.0\refint\proyecto.dll
 C:\Users\IK\proyecto\obj\Debug\net9.0\proyecto.pdb
 C:\Users\IK\proyecto\obj\Debug\net9.0\proyecto.genruntimeconfig.cache
 C:\Users\IK\proyecto\obj\Debug\net9.0\ref\proyecto.dll
+C:\Users\User\Desktop\Programacion3\proyecto\obj\Debug\net9.0\compressed\rbp9s8qmud-ogztnbvkkw.gz

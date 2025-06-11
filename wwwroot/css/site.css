@@ -151,7 +151,24 @@ main {
   }
 
   .fondo-transparente {
-    padding: 1.5rem;
+    padding: 1rem !important;
+  }
+
+  .card-body,
+  .card-header {
+    padding: 1rem !important;
+  }
+
+  .table th,
+  .table td {
+    font-size: 0.95rem;
+    padding: 0.5rem;
+  }
+
+  h1,
+  .display-3,
+  .display-4 {
+    font-size: 1.7rem;
   }
 
   .hero-section {

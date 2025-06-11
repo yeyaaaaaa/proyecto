@@ -1,8 +1,10 @@
+using System.Globalization;
 using Proyecto.Data;
 using Proyecto.Model.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Localization; // <-- Agrega esto
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,8 +26,11 @@ builder.Services.AddDbContext<ProyectoDbContext>(options =>
     )
 );
 
-// Add services to the container.
-builder.Services.AddRazorPages();
+// --- LOCALIZACIÓN ---
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddRazorPages()
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization();
 
 // Configuración de autenticación.
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -36,6 +41,15 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 var app = builder.Build();
+
+// --- LOCALIZACIÓN: configuración de culturas soportadas ---
+var supportedCultures = new[] { "es", "en" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture("es")
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

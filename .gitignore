@@ -1,1 +1,5 @@
 Migrations/
+Resources/
+.vs/
+bin/
+obj/

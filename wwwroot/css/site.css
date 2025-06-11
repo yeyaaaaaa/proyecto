@@ -8,25 +8,16 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #0052A5;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
-}
-
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
-}
-
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
 }
@@ -35,8 +26,139 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: url('/img/laboratorio-clinico.jpg') no-repeat center center fixed;
+  background-size: cover;
 }
 
-.container {
+main {
   flex: 1;
+}
+
+.navbar {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.navbar-nav .nav-link {
+  color: #333;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #0052A5;
+  transform: scale(1.1);
+}
+
+.footer {
+  flex-shrink: 0;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem 0;
+}
+
+.fondo-transparente {
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 1rem;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.hero-section {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.icon-service {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 1rem;
+}
+
+.service-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.table-responsive {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.table {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.table th {
+  background-color: #0052A5;
+  color: white;
+  font-weight: 600;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.card {
+  border: none;
+}
+
+.card-header {
+  background-color: transparent;
+}
+
+.btn-primary {
+  background-color: #0052A5;
+  border-color: #0052A5;
+}
+
+.btn-primary:hover {
+  background-color: #004080;
+  border-color: #004080;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  border-color: #218838;
+}
+
+@media (max-width: 576px) {
+  .display-3 {
+    font-size: 2.2rem;
+  }
+
+  .fondo-transparente {
+    padding: 1.5rem;
+  }
+
+  .hero-section {
+    min-height: 60vh;
+  }
+
+  .navbar {
+    padding: 0.5rem 1rem;
+  }
 }

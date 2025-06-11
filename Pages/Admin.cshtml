@@ -6,130 +6,164 @@
     ViewData["Title"] = "Panel de Administración";
 }
 
-<div class="d-flex justify-content-end mb-3">
-    <a href="/Logout" class="btn btn-outline-danger">
-        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
-    </a>
+<style>
+    body {
+        background: url(/img/fondos.jpg);
+        overflow-x: hidden;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        height: 100vh;
+    }
+
+    .fondo-transparente {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 1rem;
+        padding: 1rem;
+        backdrop-filter: blur(10px);
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-end mb-3">
+        <a href="/Logout" class="btn btn-outline-danger">
+            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+        </a>
+    </div>
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-success">@TempData["Mensaje"]</div>
+    }
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            @foreach (var err in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <div>@err.ErrorMessage</div>
+            }
+        </div>
+    }
+
+    <div class="fondo-transparente p-4">
+        <h2 class="fw-bold text-primary mb-4">Registrar Enfermero</h2>
+        <a href="/RegistroEnfermero" class="btn btn-primary mb-3">Registrar Nuevo Enfermero</a>
+
+        <hr />
+
+        <h2 class="fw-bold text-primary mb-4">Añadir Afiliación de Paciente</h2>
+        <form method="post" asp-page-handler="RegistrarPaciente">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label asp-for="AdminVM.PacienteTipoDocumento" class="form-label"></label>
+                    <input asp-for="AdminVM.PacienteTipoDocumento" type="text" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="AdminVM.PacienteDocumento" class="form-label"></label>
+                    <input asp-for="AdminVM.PacienteDocumento" type="number" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="AdminVM.PacienteEPSID" class="form-label">EPS Afiliada</label>
+                    <select asp-for="AdminVM.PacienteEPSID"
+                        asp-items="@(new SelectList(Model.AdminVM.EPSs, "EPSID", "Nombre"))"
+                        class="form-select"></select>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary w-100 mt-4">Registrar Paciente</button>
+                </div>
+            </div>
+        </form>
+
+        <hr />
+
+        <h2 class="fw-bold text-primary mt-5 mb-4">Enfermeros</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped mt-3">
+                <thead class="table-primary">
+                    <tr>
+                        <th class="p-3 text-center">Nombres</th>
+                        <th class="p-3 text-center">Apellidos</th>
+                        <th class="p-3 text-center">Documento</th>
+                        <th class="p-3 text-center">Correo</th>
+                        <th class="p-3 text-center">Teléfono</th>
+                        <th class="p-3 text-center">Estado</th>
+                        <th class="p-3 text-center">Cambiar Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var enf in Model.AdminVM.Enfermeros)
+                    {
+                        <tr class="align-middle">
+                            <td class="p-3">@enf.Nombres</td>
+                            <td class="p-3">@enf.Apellidos</td>
+                            <td class="p-3">@enf.Documento</td>
+                            <td class="p-3">@enf.Correo</td>
+                            <td class="p-3">@enf.Telefono</td>
+                            <td class="p-3">@enf.Estado</td>
+                            <td class="p-3">
+                                <form method="post" asp-page-handler="CambiarEstadoEnfermero" class="d-inline">
+                                    <input type="hidden" name="EnfermeroID" value="@enf.EnfermeroID" />
+                                    <select name="NuevoEstado" class="form-select d-inline w-auto">
+                                        @foreach (EstadoGeneral est in Enum.GetValues(typeof(EstadoGeneral)))
+                                        {
+                                            <option value="@est" selected="@(est == enf.Estado)">@est</option>
+                                        }
+                                    </select>
+                                    <button type="submit" class="btn btn-sm btn-secondary ms-2">Guardar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <h2 class="fw-bold text-primary mt-5 mb-4">Pacientes</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped mt-3">
+                <thead class="table-primary">
+                    <tr>
+                        <th class="p-3 text-center">Nombres</th>
+                        <th class="p-3 text-center">Apellidos</th>
+                        <th class="p-3 text-center">Documento</th>
+                        <th class="p-3 text-center">Correo</th>
+                        <th class="p-3 text-center">Estado</th>
+                        <th class="p-3 text-center">Cambiar Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var pac in Model.AdminVM.Pacientes)
+                    {
+                        <tr class="align-middle">
+                            <td class="p-3">@pac.Nombres</td>
+                            <td class="p-3">@pac.Apellidos</td>
+                            <td class="p-3">@pac.Documento</td>
+                            <td class="p-3">@pac.Correo</td>
+                            <td class="p-3">@pac.Estado</td>
+                            <td class="p-3">
+                                <form method="post" asp-page-handler="CambiarEstadoPaciente" class="d-inline">
+                                    <input type="hidden" name="PacienteID" value="@pac.PacienteID" />
+                                    <select name="NuevoEstado" class="form-select d-inline w-auto">
+                                        @foreach (EstadoGeneral est in Enum.GetValues(typeof(EstadoGeneral)))
+                                        {
+                                            <option value="@est" selected="@(est == pac.Estado)">@est</option>
+                                        }
+                                    </select>
+                                    <button type="submit" class="btn btn-sm btn-secondary ms-2">Guardar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
-@if (TempData["Mensaje"] != null)
-{
-    <div class="alert alert-success">@TempData["Mensaje"]</div>
-}
-
-@if (!ViewData.ModelState.IsValid)
-{
-    <div class="alert alert-danger">
-        @foreach (var err in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-        {
-            <div>@err.ErrorMessage</div>
-        }
-    </div>
-}
-
-<h2 class="mb-4">Registrar Enfermero</h2>
-<a href="/RegistroEnfermero" class="btn btn-primary mb-3">Registrar Nuevo Enfermero</a>
-
-<hr />
-
-<h2 class="mb-4">Añadir Afilición de Paciente</h2>
-<form method="post" asp-page-handler="RegistrarPaciente">
-    <div class="row">
-        <div class="col-md-3 mb-3">
-            <label asp-for="AdminVM.PacienteTipoDocumento" class="form-label"></label>
-            <input asp-for="AdminVM.PacienteTipoDocumento" type="text" class="form-control" />
-        </div>
-        <div class="col-md-3 mb-3">
-            <label asp-for="AdminVM.PacienteDocumento" class="form-label"></label>
-            <input asp-for="AdminVM.PacienteDocumento" type="number" class="form-control" />
-        </div>
-        <div class="col-md-3 mb-3">
-            <label asp-for="AdminVM.PacienteEPSID" class="form-label">EPS Afiliada</label>
-            <select asp-for="AdminVM.PacienteEPSID" asp-items="@(new SelectList(Model.AdminVM.EPSs,"EPSID","Nombre"))" class="form-select"></select>
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary">Registrar Paciente</button>
-</form>
-
-<hr />
-
-<h2 class="mt-5 mb-3">Enfermeros</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Nombres</th>
-            <th>Apellidos</th>
-            <th>Documento</th>
-            <th>Correo</th>
-            <th>Teléfono</th>
-            <th>Estado</th>
-            <th>Cambiar Estado</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach(var enf in Model.AdminVM.Enfermeros)
-    {
-        <tr>
-            <td>@enf.Nombres</td>
-            <td>@enf.Apellidos</td>
-            <td>@enf.Documento</td>
-            <td>@enf.Correo</td>
-            <td>@enf.Telefono</td>
-            <td>@enf.Estado</td>
-            <td>
-                <form method="post" asp-page-handler="CambiarEstadoEnfermero" class="d-inline">
-                    <input type="hidden" name="EnfermeroID" value="@enf.EnfermeroID" />
-                    <select name="NuevoEstado" class="form-select d-inline w-auto">
-                        @foreach (EstadoGeneral est in Enum.GetValues(typeof(EstadoGeneral)))
-                        {
-                            <option value="@est" selected="@(est == enf.Estado)">@est</option>
-                        }
-                    </select>
-                    <button type="submit" class="btn btn-sm btn-secondary ms-2">Guardar</button>
-                </form>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
-
-<h2 class="mt-5 mb-3">Pacientes</h2>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Nombres</th>
-            <th>Apellidos</th>
-            <th>Documento</th>
-            <th>Correo</th>
-            <th>Estado</th>
-            <th>Cambiar Estado</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach(var pac in Model.AdminVM.Pacientes)
-    {
-        <tr>
-            <td>@pac.Nombres</td>
-            <td>@pac.Apellidos</td>
-            <td>@pac.Documento</td>
-            <td>@pac.Correo</td>
-            <td>@pac.Estado</td>
-            <td>
-                <form method="post" asp-page-handler="CambiarEstadoPaciente" class="d-inline">
-                    <input type="hidden" name="PacienteID" value="@pac.PacienteID" />
-                    <select name="NuevoEstado" class="form-select d-inline w-auto">
-                        @foreach (EstadoGeneral est in Enum.GetValues(typeof(EstadoGeneral)))
-                        {
-                            <option value="@est" selected="@(est == pac.Estado)">@est</option>
-                        }
-                    </select>
-                    <button type="submit" class="btn btn-sm btn-secondary ms-2">Guardar</button>
-                </form>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+<br>
+<br>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

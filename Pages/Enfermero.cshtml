@@ -7,87 +7,110 @@
     var mensajeError = TempData["MensajeError"] as string;
 }
 
-<h2>Calendario semanal de citas</h2>
+<style>
+    body {
+        background: url(/img/fondos.jpg);
+        overflow-x: hidden;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        height: 100vh;
+    }
+    .fondo-transparente{
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 1rem;
+        padding: 1rem;
+        backdrop-filter: blur(10px);
+    }
+</style>
 
-<!-- Mostrar mensajes de éxito o error -->
-@if (!string.IsNullOrEmpty(mensajeExito))
-{
-    <div class="alert alert-success" role="alert">@mensajeExito</div>
-}
-@if (!string.IsNullOrEmpty(mensajeError))
-{
-    <div class="alert alert-danger" role="alert">@mensajeError</div>
-}
+<div class="container mt-5">
+    <h2 class="text-center fw-bold text-primary mb-4">Calendario semanal de citas</h2>
 
-<div class="d-flex justify-content-end mb-3">
-    <a href="/Logout" class="btn btn-outline-danger">
-        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
-    </a>
-</div>
+    <!-- Mostrar mensajes de éxito o error -->
+    @if (!string.IsNullOrEmpty(mensajeExito))
+    {
+        <div class="alert alert-success" role="alert">@mensajeExito</div>
+    }
+    @if (!string.IsNullOrEmpty(mensajeError))
+    {
+        <div class="alert alert-danger" role="alert">@mensajeError</div>
+    }
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            @foreach (var dia in Model.ViewModel.DiasSemana)
-            {
-                <th>@dia.Fecha.ToString("dddd dd/MM")</th>
-            }
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            @foreach (var dia in Model.ViewModel.DiasSemana)
-            {
-                <td>
-                    @if (dia.Citas.Any())
+    <div class="d-flex justify-content-end mb-3">
+        <a href="/Logout" class="btn btn-outline-danger">
+            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+        </a>
+    </div>
+
+    <div class="fondo-transparente p-4">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    @foreach (var dia in Model.ViewModel.DiasSemana)
                     {
-                        <ul class="list-unstyled">
-                            @foreach (var cita in dia.Citas)
+                        <th>@dia.Fecha.ToString("dddd dd/MM")</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    @foreach (var dia in Model.ViewModel.DiasSemana)
+                    {
+                        <td>
+                            @if (dia.Citas.Any())
                             {
-                                <li>
-                                    <strong>@cita.Hora.ToString(@"hh\:mm")</strong> - @cita.PacienteNombre <br />
-                                    <span>@cita.ExamenNombre</span>
-                                    <button class="btn btn-link btn-sm p-0" onclick="mostrarDetalle(@cita.CitaID)">Ver
-                                        detalle</button>
-                                    <!-- Formulario para subir archivo PDF -->
-                                    <form asp-page-handler="SubirResultado" method="post" enctype="multipart/form-data"
-                                        style="display:inline;">
-                                        <input type="hidden" name="citaId" value="@cita.CitaID" />
-                                        <input type="file" name="archivo" accept="application/pdf" style="display:inline;"
-                                            required />
-                                        <button type="submit" class="btn btn-primary btn-sm">Subir PDF</button>
-                                    </form>
-                                </li>
-                                <hr />
+                                <ul class="list-unstyled">
+                                    @foreach (var cita in dia.Citas)
+                                    {
+                                        <li>
+                                            <strong>@cita.Hora.ToString(@"hh\:mm")</strong> - @cita.PacienteNombre <br />
+                                            <span>@cita.ExamenNombre</span>
+                                            <button class="btn btn-link btn-sm p-0" onclick="mostrarDetalle(@cita.CitaID)">Ver
+                                                detalle</button>
+                                            <!-- Formulario para subir archivo PDF -->
+                                            <form asp-page-handler="SubirResultado" method="post" enctype="multipart/form-data"
+                                                style="display:inline;">
+                                                <input type="hidden" name="citaId" value="@cita.CitaID" />
+                                                <input type="file" name="archivo" accept="application/pdf" style="display:inline;"
+                                                    required />
+                                                <button type="submit" class="btn btn-primary btn-sm">Subir PDF</button>
+                                            </form>
+                                        </li>
+                                        <hr />
+                                    }
+                                </ul>
                             }
-                        </ul>
+                            else
+                            {
+                                <span class="text-muted">Sin citas</span>
+                            }
+                        </td>
                     }
-                    else
-                    {
-                        <span class="text-muted">Sin citas</span>
-                    }
-                </td>
-            }
-        </tr>
-    </tbody>
-</table>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-<!-- Modal para detalle de cita -->
-<div class="modal fade" id="detalleCitaModal" tabindex="-1" role="dialog" aria-labelledby="detalleCitaLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Detalle de la cita</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar" onclick="cerrarDetalle()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="detalleCitaBody">
-                <!-- Detalle de la cita se cargará por AJAX -->
-                <div class="text-center">
-                    <span class="spinner-border"></span>
-                    <span>Cargando...</span>
+    <!-- Modal para detalle de cita -->
+    <div class="modal fade" id="detalleCitaModal" tabindex="-1" role="dialog" aria-labelledby="detalleCitaLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content fondo-transparente">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detalle de la cita</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"
+                        onclick="cerrarDetalle()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="detalleCitaBody">
+                    <!-- Detalle de la cita se cargará por AJAX -->
+                    <div class="text-center">
+                        <span class="spinner-border"></span>
+                        <span>Cargando...</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -96,7 +119,6 @@
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Bootstrap JS necesario para el modal -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>

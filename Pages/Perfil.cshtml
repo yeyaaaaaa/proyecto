@@ -6,7 +6,7 @@
 
 <style>
     body {
-        background: url(/img/Fondos.jpg);
+        background: url(/img/fondos.jpg);
         overflow-x: hidden;
         width: 100%;
         background-size: cover;
@@ -15,7 +15,9 @@
         height: 100vh;
     }
     .fondo-transparente{
-        background-color: rgba(255, 255, 255, 0.6);
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 1rem;
+        padding: 1rem;
         backdrop-filter: blur(10px);
     }
 </style>
@@ -24,8 +26,8 @@
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
             <div class="card shadow border-0 fondo-transparente">
-                <div class="card-header display-2 fw-normal text-center">
-                    <h3 class="mb-0"><i class="bi bi-person-circle me-2"></i>Mi Perfil</h3>
+                <div class="card-header text-center">
+                    <h3 class="mb-0 fw-bold text-primary"><i class="bi bi-person-circle me-2"></i>Mi Perfil</h3>
                 </div>
                 <div class="card-body">
                     @if (!string.IsNullOrEmpty(Model.Mensaje))
@@ -42,15 +44,18 @@
                         <input type="hidden" asp-for="Perfil.NombreEPS" />
                         <div class="mb-3">
                             <label class="form-label">Tipo Documento</label>
-                            <input class="form-control-plaintext border-bottom" value="@Model.Perfil.TipoDocumento" readonly />
+                            <input class="form-control-plaintext border-bottom" value="@Model.Perfil.TipoDocumento"
+                                readonly />
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Documento</label>
-                            <input class="form-control-plaintext border-bottom" value="@Model.Perfil.Documento" readonly />
+                            <input class="form-control-plaintext border-bottom" value="@Model.Perfil.Documento"
+                                readonly />
                         </div>
                         <div class="mb-3">
                             <label class="form-label">EPS Afiliado</label>
-                            <input class="form-control-plaintext border-bottom" value="@Model.Perfil.NombreEPS" readonly />
+                            <input class="form-control-plaintext border-bottom" value="@Model.Perfil.NombreEPS"
+                                readonly />
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Nombres</label>
@@ -89,14 +94,16 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Fecha de Nacimiento</label>
-                            <input asp-for="Perfil.Nacimiento" type="date" class="form-control-plaintext border-bottom" readonly />
+                            <input asp-for="Perfil.Nacimiento" type="date" class="form-control-plaintext border-bottom"
+                                readonly />
                         </div>
                         <div class="d-grid">
                             <button type="submit" class="btn btn-success btn-lg mb-3">
                                 <i class="bi bi-save me-1"></i> Guardar Cambios
                             </button>
                             <div class="text-center">
-                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover " asp-page="/IndexPaciente" role="button">Regresar</a>
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                                    asp-page="/IndexPaciente" role="button">Regresar</a>
                             </div>
                         </div>
                     </form>

@@ -1,12 +1,50 @@
 ﻿@page
 @model Proyecto.Pages.LogoutModel
+@{
+    ViewData["Title"] = "Cerrando Sesión";
+}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="refresh" content="0; url=/Login" />
-</head>
-<body>
-    <p>Cerrando sesión...</p>
-</body>
-</html>
+<style>
+    body {
+        background: url(/img/fondos.jpg);
+        overflow-x: hidden;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        height: 100vh;
+    }
+
+    .fondo-transparente {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 1rem;
+        padding: 1rem;
+        backdrop-filter: blur(10px);
+    }
+</style>
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="fondo-transparente p-4 text-center">
+                <h2 class="fw-bold text-primary mb-4"><i class="bi bi-box-arrow-right me-2"></i>Cerrando Sesión</h2>
+                <p class="lead">Estás siendo desconectado. Serás redirigido en unos segundos...</p>
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="mt-3"><a href="/Login"
+                        class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">Volver
+                        al inicio de sesión ahora</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        setTimeout(function () {
+            window.location.href = "/Login";
+        }, 3000); // Redirige después de 3 segundos
+    </script>
+}

@@ -3,47 +3,39 @@
 @{
     ViewData["Title"] = "Login";
 }
-<style>
-    body {
-        background: url(/img/Fondos.jpg);
-        overflow-x: hidden;
-        width: 100%;
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        height: 100vh;
-    }
-    .fondo-transparente{
-        background-color: rgba(255, 255, 255, 0.6);
-        backdrop-filter: blur(10px);
-    }
-</style>
 
-<div class="mb-3">
-    <h1 class="display-2 fw-normal text-center">Ingresar</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="fondo-transparente p-4 text-center">
+                <h1 class="display-4 fw-bold text-primary mb-4">Ingresar</h1>
+
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger">@Model.ErrorMessage</div>
+                }
+
+                <form method="post">
+                    <div class="mb-3">
+                        <label asp-for="Login.Documento" class="form-label"></label>
+                        <input asp-for="Login.Documento" type="number" class="form-control" required />
+                        <span asp-validation-for="Login.Documento" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Login.Password" class="form-label"></label>
+                        <input asp-for="Login.Password" type="password" class="form-control" required />
+                        <span asp-validation-for="Login.Password" class="text-danger small"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">Entrar</button>
+                    <div class="text-center">
+                        <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                            asp-page="/Registro" role="button">Registrarse</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
-
-@if (!string.IsNullOrEmpty(Model.ErrorMessage))
-{
-    <div class="alert alert-danger">@Model.ErrorMessage</div>
-}
-
-<form method="post" class="fondo-transparente p-3 text-primary-emphasis border border-primary-subtle rounded-3 col-8 mx-auto">
-    <div class="mb-3">
-        <label asp-for="Login.Documento"></label>
-        <input asp-for="Login.Documento" type="number" class="form-control" required/>
-        <span asp-validation-for="Login.Documento"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Login.Password"></label>
-        <input asp-for="Login.Password" type="password" class="form-control" required/>
-        <span asp-validation-for="Login.Password"></span>
-    </div>
-    <button type="submit" class="btn btn-primary d-grid col-4 mx-auto mb-3">Entrar</button>
-    <div class="text-center">
-    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover " asp-page="/Registro" role="button">Registrarse</a>
-    </div>
-</form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

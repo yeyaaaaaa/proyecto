@@ -3,9 +3,10 @@
 @{
     ViewData["Title"] = "Registro de Enfermero";
 }
+
 <style>
     body {
-        background: url(/img/Fondos.jpg);
+        background: url(/img/fondos.jpg);
         overflow-x: hidden;
         width: 100%;
         background-size: cover;
@@ -13,68 +14,80 @@
         background-attachment: fixed;
         height: 100vh;
     }
-    .fondo-transparente{
-        background-color: rgba(255, 255, 255, 0.6);
+
+    .fondo-transparente {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 1rem;
+        padding: 1rem;
         backdrop-filter: blur(10px);
     }
 </style>
 
-<div class="mb-3">
-    <h1 class="display-4 text-center">Registrar Enfermero</h1>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="fondo-transparente p-5 text-center">
+                <h1 class="display-4 fw-bold text-primary mb-4">Registrar Enfermero</h1>
+
+                @if (!string.IsNullOrEmpty(Model.Mensaje))
+                {
+                    <div class="alert alert-danger">@Model.Mensaje</div>
+                }
+
+                <form method="post">
+                    <div class="mb-3">
+                        <label asp-for="Registro.TipoDocumento" class="form-label"></label>
+                        <select asp-for="Registro.TipoDocumento" class="form-select" required>
+                            <option value="">Seleccione...</option>
+                            <option value="CC">Cédula de Ciudadanía</option>
+                            <option value="CE">Cédula de Extranjería</option>
+                        </select>
+                        <span asp-validation-for="Registro.TipoDocumento" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Registro.Documento" class="form-label"></label>
+                        <input asp-for="Registro.Documento" class="form-control" type="text" required />
+                        <span asp-validation-for="Registro.Documento" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Registro.Nombres" class="form-label"></label>
+                        <input asp-for="Registro.Nombres" class="form-control" required />
+                        <span asp-validation-for="Registro.Nombres" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Registro.Apellidos" class="form-label"></label>
+                        <input asp-for="Registro.Apellidos" class="form-control" required />
+                        <span asp-validation-for="Registro.Apellidos" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Registro.Correo" class="form-label"></label>
+                        <input asp-for="Registro.Correo" class="form-control" required />
+                        <span asp-validation-for="Registro.Correo" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Registro.Telefono" class="form-label"></label>
+                        <input asp-for="Registro.Telefono" class="form-control" type="text" required />
+                        <span asp-validation-for="Registro.Telefono" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Registro.Contraseña" class="form-label"></label>
+                        <input asp-for="Registro.Contraseña" type="password" class="form-control" required />
+                        <span asp-validation-for="Registro.Contraseña" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Registro.ConfirmarContraseña" class="form-label"></label>
+                        <input asp-for="Registro.ConfirmarContraseña" type="password" class="form-control" required />
+                        <span asp-validation-for="Registro.ConfirmarContraseña" class="text-danger small"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">Registrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
-@if (!string.IsNullOrEmpty(Model.Mensaje))
-{
-    <div class="alert alert-danger">@Model.Mensaje</div>
-}
-
-<form method="post" class="col-8 mx-auto fondo-transparente p-3 border rounded-3">
-    <div class="mb-3">
-        <label asp-for="Registro.TipoDocumento"></label>
-        <select asp-for="Registro.TipoDocumento" class="form-select" required>
-            <option value="">Seleccione...</option>
-            <option value="CC">Cédula de Ciudadanía</option>
-            <option value="CE">Cédula de Extranjería</option>
-        </select>
-        <span asp-validation-for="Registro.TipoDocumento" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Registro.Documento"></label>
-        <input asp-for="Registro.Documento" class="form-control" type="text" required />
-        <span asp-validation-for="Registro.Documento" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Registro.Nombres"></label>
-        <input asp-for="Registro.Nombres" class="form-control" required />
-        <span asp-validation-for="Registro.Nombres" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Registro.Apellidos"></label>
-        <input asp-for="Registro.Apellidos" class="form-control" required />
-        <span asp-validation-for="Registro.Apellidos" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Registro.Correo"></label>
-        <input asp-for="Registro.Correo" class="form-control" required />
-        <span asp-validation-for="Registro.Correo" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Registro.Telefono"></label>
-        <input asp-for="Registro.Telefono" class="form-control" type="text" required />
-        <span asp-validation-for="Registro.Telefono" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Registro.Contraseña"></label>
-        <input asp-for="Registro.Contraseña" type="password" class="form-control" required />
-        <span asp-validation-for="Registro.Contraseña" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Registro.ConfirmarContraseña"></label>
-        <input asp-for="Registro.ConfirmarContraseña" type="password" class="form-control" required />
-        <span asp-validation-for="Registro.ConfirmarContraseña" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary d-grid col-4 mx-auto mb-3">Registrar</button>
-</form>
+<br>
+<br>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

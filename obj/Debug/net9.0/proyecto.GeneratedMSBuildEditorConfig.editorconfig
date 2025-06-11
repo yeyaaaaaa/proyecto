@@ -9,73 +9,73 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = proyecto
 build_property.RootNamespace = proyecto
-build_property.ProjectDir = C:\Users\User\Desktop\Programacion3\proyecto\
+build_property.ProjectDir = C:\Users\IK\proyecto\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\User\Desktop\Programacion3\proyecto
+build_property.MSBuildProjectDirectory = C:\Users\IK\proyecto
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/Admin.cshtml]
+[C:/Users/IK/proyecto/Pages/Admin.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/AgendarCita.cshtml]
+[C:/Users/IK/proyecto/Pages/AgendarCita.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWdlbmRhckNpdGEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/Enfermero.cshtml]
+[C:/Users/IK/proyecto/Pages/Enfermero.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW5mZXJtZXJvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/Index.cshtml]
+[C:/Users/IK/proyecto/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/IndexPaciente.cshtml]
+[C:/Users/IK/proyecto/Pages/IndexPaciente.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXhQYWNpZW50ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/Login.cshtml]
+[C:/Users/IK/proyecto/Pages/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/Logout.cshtml]
+[C:/Users/IK/proyecto/Pages/Logout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9nb3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/Perfil.cshtml]
+[C:/Users/IK/proyecto/Pages/Perfil.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGVyZmlsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/Registro.cshtml]
+[C:/Users/IK/proyecto/Pages/Registro.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0cm8uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/RegistroEnfermero.cshtml]
+[C:/Users/IK/proyecto/Pages/RegistroEnfermero.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0cm9FbmZlcm1lcm8uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/Resultados.cshtml]
+[C:/Users/IK/proyecto/Pages/Resultados.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzdWx0YWRvcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/IK/proyecto/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/_ViewImports.cshtml]
+[C:/Users/IK/proyecto/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/_ViewStart.cshtml]
+[C:/Users/IK/proyecto/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/Desktop/Programacion3/proyecto/Pages/Shared/_Layout.cshtml]
+[C:/Users/IK/proyecto/Pages/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-0xpw18kgp1

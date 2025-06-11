@@ -3,85 +3,111 @@
 @{
     ViewData["Title"] = "Check Lab";
 }
-<style>
-    body {
-        background: url(/img/laboratorio-clinico.jpg);
-        overflow-x: hidden;
-        width: 100%;
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        height: 100vh;
-    }
-    .fondo-transparente{
-        background-color: rgba(255, 255, 255, 0.3);
-        border-radius: 1rem;
-        padding: 1rem;
-        backdrop-filter: blur(10px);
-    }
-</style>
-<div class="text-center">
-    <div class=" texto p-5">
-        <h1 class="display-2 fw-bold">Tu salud</h1>
-        <h3 class="display-4 fw-bolder">Nuestra prioridad</h3>
+
+<!-- Hero Section -->
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="fondo-transparente text-center p-4 p-md-5">
+            <h1 class="display-3 fw-bold" style="color: #004080;" mb-3">Cuidamos tu salud</h1>
+            <h4 class="fw-normal" style="color: #004080;" mb-4">Agendamiento fácil, rápido y confiable para tus análisis
+                clínicos.</h4>
+            <a class="btn btn-primary btn-lg" asp-page="/Login" role="button">Ingresa ahora</a>
+        </div>
     </div>
-    <div class="fondo-transparente">
-        <h5 class="fw-normal lh-lg">En ChekLab, simplificamos tu agendamiendo para que recibas atencion medica confiable sin complicaciones.</h5>
-        <a class="btn btn-primary d-grid col-6 mx-auto"  asp-page="/Login" role="button">Ingresa a tu cuenta</a>
+</section>
+
+<!-- Nosotros Section -->
+<section id="nosotros" class="py-5">
+    <div class="container">
+        <div class="fondo-transparente text-center p-4">
+            <h2 class="fw-bold text-primary mb-4">¿Quiénes somos?</h2>
+            <p class="lead fw-normal lh-lg mb-4">
+                En CheckLab, nuestro compromiso es ofrecer atención médica accesible y de calidad. Nuestra misión es
+                transformar la experiencia de los pacientes, simplificando el acceso a servicios de laboratorio con
+                soluciones tecnológicas innovadoras.
+            </p>
+            <p class="fw-normal lh-lg">
+                Somos un equipo de profesionales en salud y tecnología, dedicados a optimizar el agendamiento de citas,
+                la gestión de resultados y la interacción con especialistas, garantizando seguridad y comodidad.
+            </p>
+        </div>
     </div>
-</div>
+</section>
 
-<br />
-
-<div class="text-center">
-
-    <div id="nosotros" class="fondo-transparente text-center">
-        <h5 class="fw-normal lh-lg mb-3">
-            En CheckLab si creemos en la importancia de una atencion
-            medica accesible, eficiente y de calidad, Nacimos con la mison
-            de trasnformar la experiencia de los pacientes en el acceso a
-            los servicios de laboratorios, eliminando largas esperas y brindando
-            soluciones tecnologicas para que faciliten cada paso del proceso
-        </h5>
-        <h3 class="display-4 fw-bolder text-primary mb-3">¿Quienes somos?</h3>
-        <h5 class="fw-normal lh-lg">
-            Somos un equipo de profesionales de la salud y la tecnologia
-            comprometidos en optimizar el agendamiento de citas, la gestion
-            de resultados y la interaccion entre pacientes y especialistas.
-            Nuestro enfoque esta basado en la innovacion y la confianza,
-            garantizando seguridad, rapidez y comodidad en cada servicio.
-        </h5>
+<!-- Servicios Section -->
+<section id="servicio" class="py-5">
+    <div class="container">
+        <h2 class="fw-bold text-primary text-center mb-5">Nuestros Servicios</h2>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 fondo-transparente text-center service-card">
+                    <div class="card-body">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png" alt="Análisis Clínicos"
+                            class="icon-service">
+                        <h5 class="card-title fw-bold">Análisis clínicos</h5>
+                        <p class="card-text">Exámenes de rutina y especializados para un diagnóstico preciso.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 fondo-transparente text-center service-card">
+                    <div class="card-body">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3658/3658959.png" alt="Agendamiento"
+                            class="icon-service">
+                        <h5 class="card-title fw-bold">Agendamiento en línea</h5>
+                        <p class="card-text">Reserva tu cita en pocos clics desde cualquier dispositivo.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 fondo-transparente text-center service-card">
+                    <div class="card-body">
+                        <img src="https://cdn-icons-png.flaticon.com/512/893/893079.png" alt="Resultados Digitales"
+                            class="icon-service">
+                        <h5 class="card-title fw-bold">Resultados digitales</h5>
+                        <p class="card-text">Accede a tus resultados de forma segura y rápida.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 fondo-transparente text-center service-card">
+                    <div class="card-body">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3064/3064155.png" alt="Asesoría Médica"
+                            class="icon-service">
+                        <h5 class="card-title fw-bold">Asesoría médica</h5>
+                        <p class="card-text">Consulta personalizada con nuestros especialistas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
 
-<br />
-
-<div id="servicio" class="text-center">
-    <div class="fondo-transparente text-center">
-        <h3 class="display-4 fw-bolder text-primary mb-4">Nuestros Servicios</h3>
-        <ul class="list-unstyled fw-normal lh-lg">
-            <li> Análisis clínicos de rutina y especializados</li>
-            <li> Agendamiento de citas en línea</li>
-            <li> Resultados digitales seguros</li>
-            <li> Asesoría médica personalizada</li>
-        </ul>
+<!-- Contacto Section -->
+<section id="contacto" class="py-5">
+    <div class="container">
+        <div class="fondo-transparente text-center p-4">
+            <h2 class="fw-bold text-primary mb-4">Contáctanos</h2>
+            <p class="lead fw-normal lh-lg mb-4">
+                ¿Tienes preguntas? Estamos aquí para ayudarte en cada paso.
+            </p>
+            <ul class="list-unstyled fw-normal lh-lg">
+                <li class="d-flex align-items-center justify-content-center mb-2">
+                    <img src="https://cdn-icons-png.flaticon.com/512/927/927667.png" alt="Dirección"
+                        class="icon-service" style="width: 24px; height: 24px; margin-right: 0.5rem;">
+                    <span>Calle Ficticia #123, Ciudad Salud</span>
+                </li>
+                <li class="d-flex align-items-center justify-content-center mb-2">
+                    <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" alt="Teléfono" class="icon-service"
+                        style="width: 24px; height: 24px; margin-right: 0.5rem;">
+                    <span>Teléfono: (601) 123-4567</span>
+                </li>
+                <li class="d-flex align-items-center justify-content-center">
+                    <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Correo" class="icon-service"
+                        style="width: 24px; height: 24px; margin-right: 0.5rem;">
+                    <span>Correo: contacto@checklab.com</span>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
-
-<br />
-
-<div id="contacto" class="text-center">
-    <div class="fondo-transparente text-center">
-        <h3 class="display-4 fw-bolder text-primary mb-4">Contáctanos</h3>
-        <p class="fw-normal lh-lg mb-3">
-            ¿Tienes preguntas o deseas más información? Estamos aquí para ayudarte.
-        </p>
-        <p class="fw-normal">
-            📍 Dirección: Calle Ficticia #123, Ciudad Salud<br />
-            📞 Teléfono: (601) 123-4567<br />
-            📧 Correo: contacto@checklab.com
-        </p>
-    </div>
-</div>
-
-<br />
+</section>

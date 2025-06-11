@@ -8,6 +8,7 @@ namespace Proyecto.Model
     public class Rol
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RolID { get; set; }
 
         [Required]

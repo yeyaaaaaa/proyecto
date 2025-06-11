@@ -8,6 +8,7 @@ namespace Proyecto.Model
     public class Afiliacion
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AfiliacionID { get; set; }
 
         [Required]

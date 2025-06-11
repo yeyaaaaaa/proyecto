@@ -8,6 +8,7 @@ namespace Proyecto.Model
     public class Notificacion
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int NotificacionID { get; set; }
 
         [Required]

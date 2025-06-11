@@ -8,6 +8,7 @@ namespace Proyecto.Model
     public class HistorialCita
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int HistorialID { get; set; }
 
         [Required]

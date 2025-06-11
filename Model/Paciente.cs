@@ -8,6 +8,7 @@ namespace Proyecto.Model
     public class Paciente
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PacienteID { get; set; }
 
         [Required]

@@ -8,6 +8,7 @@ namespace Proyecto.Model
     public class EstadoCita
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int EstadoID { get; set; }
 
         [Required]

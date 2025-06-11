@@ -8,6 +8,7 @@ namespace Proyecto.Model
     public class LogSistema
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int LogID { get; set; }
 
         [Required]

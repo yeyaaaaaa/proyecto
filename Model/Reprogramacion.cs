@@ -8,6 +8,7 @@ namespace Proyecto.Model
     public class Reprogramacion
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ReprogramacionID { get; set; }
 
         [Required]

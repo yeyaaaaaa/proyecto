@@ -8,6 +8,7 @@ namespace Proyecto.Model
     public class Usuario
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UsuarioID { get; set; }
 
         [Required]
